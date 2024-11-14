@@ -12,28 +12,31 @@ namespace RetroShooter.Scenes
     internal class AboutScene : Scene
     {
         private SpriteBatch _spriteBatch;
-        private SpriteFont _font;
+        private SpriteFont _creditsTitleFont;
+        private SpriteFont _menuItemsfont;
+        private SpriteFont _menuTitlefont;
         private List<string> _aboutText;
         private Game _game;
         private KeyboardState _previousKeyboardState;
 
-        public AboutScene(SpriteBatch spriteBatch, SpriteFont font, Game game)
+        public AboutScene(SpriteBatch spriteBatch, SpriteFont creditsTitleFont, SpriteFont menuItemsfont, SpriteFont menuTitlefont, Game game)
         {
             _spriteBatch = spriteBatch;
-            _font = font;
+            _creditsTitleFont = creditsTitleFont;
+            _menuItemsfont = menuItemsfont;
+            _menuTitlefont = menuTitlefont;
             _game = game;
             _aboutText = new List<string>
-                {
-                    "Retro Shooter",
-                    " ",
-                    "Version 1.0",
-                    "Developed by: Mauricio Lechuga",
-                    " ",
-                    "Assets provided by Kenney",
-                    "(www.kenney.nl)",
-                    " ",
-                    "Press Enter to return..."
-                };
+                    {
+                        "Retro Shooter v1.0",
+                        " ",
+                        "Developed by Mauricio Lechuga",
+                        " ",
+                        "Assets provided by Kenney",
+                        "(www.kenney.nl)",
+                        " ",
+                        "Press Enter to return..."
+                    };
             _previousKeyboardState = Keyboard.GetState();
         }
         public override void Update(GameTime gameTime)
@@ -42,7 +45,7 @@ namespace RetroShooter.Scenes
             if (keyboardState.IsKeyDown(Keys.Enter) && !_previousKeyboardState.IsKeyDown(Keys.Enter))
             {
                 // Switches to the StartScene using the SceneManager
-                SceneManager.ChangeScene(new StartScene(_spriteBatch, _font, _game));
+                SceneManager.ChangeScene(new StartScene(_spriteBatch, _creditsTitleFont, _menuItemsfont, _menuTitlefont, _game));
             }
 
             _previousKeyboardState = keyboardState;
@@ -54,13 +57,13 @@ namespace RetroShooter.Scenes
             for (int i = 0; i < _aboutText.Count; i++)
             {
                 var text = _aboutText[i];
-                var textSize = _font.MeasureString(text);
+                var textSize = _creditsTitleFont.MeasureString(text);
                 var position = new Vector2(
                     (_game.GraphicsDevice.Viewport.Width - textSize.X) / 2,
                     100 + i * 50
                 );
-                
-                spriteBatch.DrawString(_font, text, position, Color.White);
+
+                spriteBatch.DrawString(_creditsTitleFont, text, position, Color.White);
             }
 
             spriteBatch.End();

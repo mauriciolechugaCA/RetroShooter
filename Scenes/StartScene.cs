@@ -14,15 +14,19 @@ namespace RetroShooter.Scenes
     {
         private SpriteBatch _spriteBatch;
         private SpriteFont _font;
+        private SpriteFont _menuItemsfont;
+        private SpriteFont _menuTitlefont;
         private List<string> _menuItems;
         private int _selectedMenuItem;
         private Game _game;
         private KeyboardState _previousKeyboardState;
 
-        public StartScene(SpriteBatch spriteBatch, SpriteFont font, Game game)
+        public StartScene(SpriteBatch spriteBatch, SpriteFont font, SpriteFont menuItemsfont, SpriteFont menuTitlefont, Game game)
         {
             _spriteBatch = spriteBatch;
             _font = font;
+            _menuItemsfont = menuItemsfont;
+            _menuTitlefont = menuTitlefont;
             _menuItems = new List<string> { "Play", "Help", "About", "Exit" };
             _selectedMenuItem = 0;
             _game = game;
@@ -61,7 +65,7 @@ namespace RetroShooter.Scenes
                         break;
                     case 2:
                         // Switch to AboutScene
-                        SceneManager.ChangeScene(new AboutScene(_spriteBatch, _font, _game));
+                        SceneManager.ChangeScene(new AboutScene(_spriteBatch, _font, _menuItemsfont, _menuTitlefont, _game));
                         break;
                     case 3:
                         // Exit
@@ -77,10 +81,21 @@ namespace RetroShooter.Scenes
         {
             _spriteBatch.Begin();
 
+            // Draw the title
+            string title = "Retro Shooter";
+            var titleSize = _menuTitlefont.MeasureString(title);
+            var titlePosition = new Vector2((_game.GraphicsDevice.Viewport.Width - titleSize.X) / 2, 75);
+
+            _spriteBatch.DrawString(_menuTitlefont, title, titlePosition, Color.White);
+
+            // Draw the menu items
             for (int i = 0; i < _menuItems.Count; i++)
             {
+                var text = _menuItems[i];
+                var textSize = _menuItemsfont.MeasureString(text);
+                var textPosition = new Vector2((_game.GraphicsDevice.Viewport.Width - textSize.X) / 2, 200 + i * 100);
                 var color = (i == _selectedMenuItem) ? Color.Yellow : Color.White;
-                _spriteBatch.DrawString(_font, _menuItems[i], new Vector2(100, 100 + i * 50), color);
+                _spriteBatch.DrawString(_menuItemsfont, text, textPosition, color);
             }
 
             _spriteBatch.End();

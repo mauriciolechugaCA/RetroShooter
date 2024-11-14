@@ -18,6 +18,10 @@ namespace RetroShooter
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private SpriteFont _font;
+        private SpriteFont _hudFont;
+        private SpriteFont _creditsTitleFont;
+        private SpriteFont _menuTitle;
+        private SpriteFont _menuItems;
 
         private GameScene _currentScene = GameScene.Start;
 
@@ -51,15 +55,19 @@ namespace RetroShooter
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _font = Content.Load<SpriteFont>("fonts/gameFont");
+            _font = Content.Load<SpriteFont>("fonts/gameFont"); // Used in credits
+            _hudFont = Content.Load<SpriteFont>("fonts/hudFont"); // Used in the game HUD
+            _creditsTitleFont = Content.Load<SpriteFont>("fonts/creditsTitle"); // Used in the credits title
+            _menuTitle = Content.Load<SpriteFont>("fonts/menuTitle"); // Used in the menu title
+            _menuItems = Content.Load<SpriteFont>("fonts/menuItems"); // Used in the menu items
 
-            _startScene = new StartScene(_spriteBatch, _font, this);
+            _startScene = new StartScene(_spriteBatch, _font, _menuItems, _menuTitle,  this);
             //_playScene = new PlayScene(_spriteBatch, _font);
             //_helpScene = new HelpScene(_spriteBatch, _font);
-            _aboutScene = new AboutScene(_spriteBatch, _font, this);
+            _aboutScene = new AboutScene(_spriteBatch, _creditsTitleFont, _menuItems, _menuTitle, this);
 
             // Sets the initial scene
-            SceneManager.ChangeScene(new StartScene(_spriteBatch, _font, this));
+            SceneManager.ChangeScene(new StartScene(_spriteBatch, _font, _menuItems, _menuTitle, this));
 
         }
 
