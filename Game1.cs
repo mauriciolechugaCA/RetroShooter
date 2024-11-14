@@ -20,7 +20,11 @@ namespace RetroShooter
         private SpriteFont _font;
 
         private GameScene _currentScene = GameScene.Start;
+
         private StartScene _startScene;
+        private PlayScene _playScene;
+        private AboutScene _aboutScene;
+        private HelpScene _helpScene;
 
         public Game1()
         {
@@ -38,6 +42,9 @@ namespace RetroShooter
             _graphics.PreferredBackBufferHeight = 1200;
             _graphics.ApplyChanges();
 
+            // Initialize the SceneManager
+            SceneManager.Initialize(this);
+
             base.Initialize();
         }
 
@@ -46,9 +53,14 @@ namespace RetroShooter
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _font = Content.Load<SpriteFont>("fonts/gameFont");
 
-            _startScene = new StartScene(_spriteBatch, _font);
+            _startScene = new StartScene(_spriteBatch, _font, this);
+            //_playScene = new PlayScene(_spriteBatch, _font);
+            //_helpScene = new HelpScene(_spriteBatch, _font);
+            _aboutScene = new AboutScene(_spriteBatch, _font, this);
 
-            // TODO: use this.Content to load your game content here
+            // Sets the initial scene
+            SceneManager.ChangeScene(new StartScene(_spriteBatch, _font, this));
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -56,16 +68,8 @@ namespace RetroShooter
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            
-            switch (_currentScene)
-            {
-                case GameScene.Start:
-                    _startScene.Update(gameTime);
-                    break;
-
-                    // TODO: Add other scenes
-            }
-
+            // Update the current scene using the SceneManager
+            SceneManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -74,12 +78,7 @@ namespace RetroShooter
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            switch (_currentScene)
-            {
-                case GameScene.Start:
-                    _startScene.Draw(gameTime);
-                    break;
-            }
+            SceneManager.Draw(gameTime, _spriteBatch);
 
             base.Draw(gameTime);
         }
