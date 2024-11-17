@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
+using RetroShooter.Entities.Projectiles;
 
 /*
  * Represents a shielded enemy that appears on screen, and shoots vertically and horizontally.

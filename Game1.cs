@@ -63,7 +63,7 @@ namespace RetroShooter
 
             _startScene = new StartScene(_spriteBatch, _font, _menuItems, _menuTitle,  this);
             //_playScene = new PlayScene(_spriteBatch, _font);
-            //_helpScene = new HelpScene(_spriteBatch, _font);
+            _helpScene = new HelpScene(_spriteBatch, _font);
             _aboutScene = new AboutScene(_spriteBatch, _creditsTitleFont, _menuItems, _menuTitle, this);
 
             // Sets the initial scene

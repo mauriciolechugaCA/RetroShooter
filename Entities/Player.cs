@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RetroShooter.Entities.Powerups;
+using RetroShooter.Entities.Projectiles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -51,20 +53,35 @@ namespace RetroShooter.Entities
             Health -= damage;
         }
 
-        public void ApplyPowerUp(PowerUp powerUp)
+        public void ApplyEffect(Powerup powerUp)
         {
             switch (powerUp.Type)
             {
                 case PowerUpType.Shield:
                     HasShield = true;
                     break;
-                case PowerUpType.Laser:
+                case PowerUpType.PowerLaser:
                     IsPowerLaserActive = true;
                     break;
-                case PowerUpType.Health:
+                case PowerUpType.HealthRegeneration:
                     Health += 1;
                     break;
             }
+        }
+
+        public void SetHasShield(bool hasShield)
+        {
+            HasShield = hasShield;
+        }
+
+        public void SetHealth(int health)
+        {
+            Health = health;
+        }
+
+        public void SetIsPowerLaserActive(bool isPowerLaserActive)
+        {
+            IsPowerLaserActive = isPowerLaserActive;
         }
 
         public void Update(int screenWidth, int screenHeight)

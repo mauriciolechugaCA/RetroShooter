@@ -62,6 +62,7 @@ namespace RetroShooter.Scenes
                         break;
                     case 1:
                         // TODO: Help
+                        SceneManager.ChangeScene(new HelpScene(_spriteBatch, _font));
                         break;
                     case 2:
                         // Switch to AboutScene
