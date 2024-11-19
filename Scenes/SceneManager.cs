@@ -11,12 +11,12 @@ namespace RetroShooter.Scenes
     internal class SceneManager
     {
         private static Stack<Scene> _scenes = new Stack<Scene>();
-        private static Game _game;
+        private static Game1 _game;
         private static Scene _currentScene;
 
         public static void Initialize(Game game)
         {
-            _game = game;
+            _game = (Game1)game;
         }
 
         public static void ChangeScene(Scene newScene)

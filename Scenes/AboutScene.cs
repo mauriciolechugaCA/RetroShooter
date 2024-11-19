@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -16,10 +13,10 @@ namespace RetroShooter.Scenes
         private SpriteFont _menuItemsfont;
         private SpriteFont _menuTitlefont;
         private List<string> _aboutText;
-        private Game _game;
+        private Game1 _game; // Change type to Game1 to access player
         private KeyboardState _previousKeyboardState;
 
-        public AboutScene(SpriteBatch spriteBatch, SpriteFont creditsTitleFont, SpriteFont menuItemsfont, SpriteFont menuTitlefont, Game game)
+        public AboutScene(SpriteBatch spriteBatch, SpriteFont creditsTitleFont, SpriteFont menuItemsfont, SpriteFont menuTitlefont, Game1 game)
         {
             _spriteBatch = spriteBatch;
             _creditsTitleFont = creditsTitleFont;
@@ -27,25 +24,26 @@ namespace RetroShooter.Scenes
             _menuTitlefont = menuTitlefont;
             _game = game;
             _aboutText = new List<string>
-                    {
-                        "Retro Shooter v1.0",
-                        " ",
-                        "Developed by Mauricio Lechuga",
-                        " ",
-                        "Assets provided by Kenney",
-                        "(www.kenney.nl)",
-                        " ",
-                        "Press Enter to return..."
-                    };
+            {
+                "Retro Shooter v1.0",
+                " ",
+                "Developed by Mauricio Lechuga",
+                " ",
+                "Assets provided by Kenney",
+                "(www.kenney.nl)",
+                " ",
+                "Press Enter to return..."
+            };
             _previousKeyboardState = Keyboard.GetState();
         }
+
         public override void Update(GameTime gameTime)
         {
             var keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.Enter) && !_previousKeyboardState.IsKeyDown(Keys.Enter))
             {
                 // Switches to the StartScene using the SceneManager
-                SceneManager.ChangeScene(new StartScene(_spriteBatch, _creditsTitleFont, _menuItemsfont, _menuTitlefont, _game));
+                SceneManager.ChangeScene(new StartScene(_spriteBatch, _creditsTitleFont, _menuItemsfont, _menuTitlefont, _game, _game.player)); // Pass player
             }
 
             _previousKeyboardState = keyboardState;
@@ -70,3 +68,4 @@ namespace RetroShooter.Scenes
         }
     }
 }
+

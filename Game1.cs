@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RetroShooter.Scenes;
+using RetroShooter.Entities;
 
 namespace RetroShooter
 {
@@ -17,18 +18,24 @@ namespace RetroShooter
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
+        // Fonts
         private SpriteFont _font;
         private SpriteFont _hudFont;
         private SpriteFont _creditsTitleFont;
         private SpriteFont _menuTitle;
         private SpriteFont _menuItems;
 
-        private GameScene _currentScene = GameScene.Start;
+        // Game objects
+        public Player player; // Make player public to access it in AboutScene
+        private Texture2D playerTexture;
 
+        // Scene management
+        private GameScene _currentScene;
         private StartScene _startScene;
         private PlayScene _playScene;
-        private AboutScene _aboutScene;
         private HelpScene _helpScene;
+        private AboutScene _aboutScene;
 
         public Game1()
         {
@@ -39,15 +46,14 @@ namespace RetroShooter
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             // Set the window size
-            _graphics.PreferredBackBufferWidth = 800;
-            _graphics.PreferredBackBufferHeight = 1200;
+            _graphics.PreferredBackBufferWidth = 600;
+            _graphics.PreferredBackBufferHeight = 800;
             _graphics.ApplyChanges();
 
             // Initialize the SceneManager
             SceneManager.Initialize(this);
+            _currentScene = GameScene.Start;
 
             base.Initialize();
         }
@@ -55,28 +61,45 @@ namespace RetroShooter
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _font = Content.Load<SpriteFont>("fonts/gameFont"); // Used in credits
-            _hudFont = Content.Load<SpriteFont>("fonts/hudFont"); // Used in the game HUD
-            _creditsTitleFont = Content.Load<SpriteFont>("fonts/creditsTitle"); // Used in the credits title
-            _menuTitle = Content.Load<SpriteFont>("fonts/menuTitle"); // Used in the menu title
-            _menuItems = Content.Load<SpriteFont>("fonts/menuItems"); // Used in the menu items
 
-            _startScene = new StartScene(_spriteBatch, _font, _menuItems, _menuTitle,  this);
-            //_playScene = new PlayScene(_spriteBatch, _font);
+            // Load fonts
+            _font = Content.Load<SpriteFont>("fonts/gameFont");
+            _hudFont = Content.Load<SpriteFont>("fonts/hudFont");
+            _creditsTitleFont = Content.Load<SpriteFont>("fonts/creditsTitle");
+            _menuTitle = Content.Load<SpriteFont>("fonts/menuTitle");
+            _menuItems = Content.Load<SpriteFont>("fonts/menuItems");
+
+            // Load game textures
+            playerTexture = Content.Load<Texture2D>("images/player/playerShip");
+
+            // Initialize player
+            player = new Player(
+                new Vector2(GraphicsDevice.Viewport.Width / 2f, GraphicsDevice.Viewport.Height - 100),
+                100,  // Initial health
+                playerTexture,
+                0.5f  // Scale
+            );
+
+            // Initialize scenes
+            _startScene = new StartScene(_spriteBatch, _font, _menuItems, _menuTitle, this, player);
+            _playScene = new PlayScene(_spriteBatch, _hudFont, player);
             _helpScene = new HelpScene(_spriteBatch, _font);
             _aboutScene = new AboutScene(_spriteBatch, _creditsTitleFont, _menuItems, _menuTitle, this);
 
-            // Sets the initial scene
-            SceneManager.ChangeScene(new StartScene(_spriteBatch, _font, _menuItems, _menuTitle, this));
-
+            // Set initial scene
+            SceneManager.ChangeScene(_startScene);
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            // Exit game if escape is pressed
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+                Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
                 Exit();
+            }
 
-            // Update the current scene using the SceneManager
+            // Update current scene
             SceneManager.Update(gameTime);
 
             base.Update(gameTime);
@@ -84,11 +107,40 @@ namespace RetroShooter
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
+            // Draw current scene
             SceneManager.Draw(gameTime, _spriteBatch);
 
             base.Draw(gameTime);
         }
+
+        // Helper method to change scenes
+        public void ChangeScene(GameScene newScene)
+        {
+            _currentScene = newScene;
+            switch (newScene)
+            {
+                case GameScene.Start:
+                    SceneManager.ChangeScene(_startScene);
+                    break;
+                case GameScene.Play:
+                    SceneManager.ChangeScene(_playScene);
+                    break;
+                case GameScene.Help:
+                    SceneManager.ChangeScene(_helpScene);
+                    break;
+                case GameScene.About:
+                    SceneManager.ChangeScene(_aboutScene);
+                    break;
+            }
+        }
+
+        // Method to get current scene
+        public GameScene GetCurrentScene()
+        {
+            return _currentScene;
+        }
     }
 }
+

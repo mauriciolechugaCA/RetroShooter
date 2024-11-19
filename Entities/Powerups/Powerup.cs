@@ -11,14 +11,14 @@ using System.Threading.Tasks;
 
 namespace RetroShooter.Entities.Powerups
 {
-    internal enum PowerUpType
+    public enum PowerUpType
     {
         Shield,
         HealthRegeneration,
         PowerLaser
     }
 
-    internal class Powerup
+    public class Powerup
     {
         public Vector2 Position { get; private set; }
         public PowerUpType Type { get; private set; }
@@ -40,7 +40,7 @@ namespace RetroShooter.Entities.Powerups
                     player.SetHasShield(true);
                     break;
                 case PowerUpType.HealthRegeneration:
-                    player.SetHealth(player.Health + 50); // Assuming 50 is the health increment
+                    player.SetHealth(player.Health + 1); // Assuming 1 is the health increment
                     break;
                 case PowerUpType.PowerLaser:
                     player.SetIsPowerLaserActive(true);

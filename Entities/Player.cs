@@ -1,45 +1,172 @@
-﻿using RetroShooter.Entities.Powerups;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using RetroShooter.Entities.Powerups;
 using RetroShooter.Entities.Projectiles;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-
-/*
- * Represents the player’s ship and manages all player-specific attributes and actions.
- */
 
 namespace RetroShooter.Entities
 {
-    internal class Player
+    public class Player
     {
-        public Vector2 Position { get; private set; }
-        public int Health { get; private set; }
-        public int Score { get; private set; }
-        public bool HasShield { get; private set; }
-        public bool IsPowerLaserActive { get; private set; }
-        private float speed;
+        // Constants
+        private const float DEFAULT_SPEED = 5f;
+        private const float DEFAULT_SHOOT_COOLDOWN = 0.5f;
+        private const float PROJECTILE_OFFSET_Y = -20f;
+        private const int DEFAULT_POWER_LASER_DAMAGE = 2;
+        private const int DEFAULT_NORMAL_DAMAGE = 1;
+        private static readonly Vector2 PROJECTILE_DIRECTION = new Vector2(0f, -1f);
 
-        public Player(Vector2 startPosition, int health)
+        // Properties
+        public Vector2 Position { get; set; }
+        public int Health { get; set; }
+        public int Score { get; set; }
+        public bool HasShield { get; set; }
+        public bool IsPowerLaserActive { get; set; }
+        public bool IsAlive;
+
+        // Texture related properties
+        private Texture2D texture;
+        private Vector2 origin;
+        private float rotation;
+        private float scale;
+
+        // Rectangle for collision detection
+        public Rectangle Bounds => new Rectangle(
+            (int)(Position.X - origin.X * scale),
+            (int)(Position.Y - origin.Y * scale),
+            (int)(texture.Width * scale),
+            (int)(texture.Height * scale)
+        );
+
+        // Events
+        public event Action<int> OnHealthChanged;
+        public event Action<int> OnScoreChanged;
+        public event Action OnShieldStatusChanged;
+        public event Action OnPowerLaserStatusChanged;
+        public event Action OnProjectileFired;
+
+        // Private fields
+        private float speed;
+        private float shootCooldown;
+        private float lastShotTime;
+        private Vector2 dimensions;
+
+        public Player(Vector2 startPosition, int health, Texture2D playerTexture, float scale)
         {
             Position = startPosition;
             Health = health;
+            texture = playerTexture;
+            this.scale = scale;
+            dimensions = new Vector2(texture.Width * scale, texture.Height * scale);
+            origin = new Vector2(texture.Width / 2f, texture.Height / 2f);
+            speed = DEFAULT_SPEED;
+            shootCooldown = DEFAULT_SHOOT_COOLDOWN;
+            lastShotTime = 0f;
             Score = 0;
             HasShield = false;
             IsPowerLaserActive = false;
-            speed = 5;
+            IsAlive = true;
         }
 
-        public void Move(Vector2 direction)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            Position += direction * speed;
+            if (!IsAlive) return;
+
+            Color tint = Color.White;
+            if (HasShield)
+            {
+                tint = Color.LightBlue;
+            }
+            else if (IsPowerLaserActive)
+            {
+                tint = Color.Yellow;
+            }
+
+            spriteBatch.Draw(
+                texture,
+                Position,
+                null,
+                tint,
+                rotation,
+                origin,
+                scale,
+                SpriteEffects.None,
+                0
+            );
         }
 
-        public void Shoot(List<Projectile> projectiles)
+        // This method is used to set the texture of the player
+        public void SetTexture(Texture2D newTexture)
         {
-            var projectile = new Projectile(Position, new Vector2(0, -1), 10, IsPowerLaserActive ? 2 : 1);
+            texture = newTexture;
+            origin = new Vector2(texture.Width / 2, texture.Height / 2);
+        }
+
+        // This method is used to set the scale of the player
+        public void SetScale(float newScale)
+        {
+            scale = newScale;
+            origin = new Vector2(texture.Width / 2, texture.Height / 2);
+        }
+
+        public void Move(KeyboardState keyboardState, int screenWidth, int screenHeight)
+        {
+            Vector2 direction = GetMovementDirection(keyboardState);
+            if (direction != Vector2.Zero)
+            {
+                direction.Normalize();
+                Position += direction * speed;
+                ClampPositionToScreen(screenWidth, screenHeight);
+            }
+        }
+
+        private Vector2 GetMovementDirection(KeyboardState keyboardState)
+        {
+            Vector2 direction = Vector2.Zero;
+            if (keyboardState.IsKeyDown(Keys.W)) direction.Y -= 1;
+            if (keyboardState.IsKeyDown(Keys.S)) direction.Y += 1;
+            if (keyboardState.IsKeyDown(Keys.A)) direction.X -= 1;
+            if (keyboardState.IsKeyDown(Keys.D)) direction.X += 1;
+            return direction;
+        }
+
+        private void ClampPositionToScreen(int screenWidth, int screenHeight)
+        {
+            Position = new Vector2(
+                Math.Clamp(Position.X, dimensions.X / 2, screenWidth - dimensions.X / 2),
+                Math.Clamp(Position.Y, dimensions.Y / 2, screenHeight - dimensions.Y / 2)
+            );
+        }
+
+        public void Shoot(List<Projectile> projectiles, GameTime gameTime)
+        {
+            if (!CanShoot(gameTime)) return;
+
+            CreateProjectile(projectiles);
+            lastShotTime = (float)gameTime.TotalGameTime.TotalSeconds;
+            OnProjectileFired?.Invoke();
+        }
+
+        private bool CanShoot(GameTime gameTime)
+        {
+            return gameTime.TotalGameTime.TotalSeconds - lastShotTime > shootCooldown;
+        }
+
+        private void CreateProjectile(List<Projectile> projectiles)
+        {
+            Vector2 projectilePosition = new Vector2(
+                Position.X,
+                Position.Y + PROJECTILE_OFFSET_Y
+            );
+
+            var projectile = new Projectile(
+                projectilePosition,
+                PROJECTILE_DIRECTION,
+                10f,
+                IsPowerLaserActive ? DEFAULT_POWER_LASER_DAMAGE : DEFAULT_NORMAL_DAMAGE
+            );
             projectiles.Add(projectile);
         }
 
@@ -48,9 +175,23 @@ namespace RetroShooter.Entities
             if (HasShield)
             {
                 HasShield = false;
+                OnShieldStatusChanged?.Invoke();
                 return;
             }
-            Health -= damage;
+
+            int previousHealth = Health;
+            Health = Math.Max(0, Health - damage);
+
+            if (previousHealth != Health)
+            {
+                OnHealthChanged?.Invoke(Health);
+            }
+        }
+
+        public void AddScore(int points)
+        {
+            Score += points;
+            OnScoreChanged?.Invoke(Score);
         }
 
         public void ApplyEffect(Powerup powerUp)
@@ -58,39 +199,50 @@ namespace RetroShooter.Entities
             switch (powerUp.Type)
             {
                 case PowerUpType.Shield:
-                    HasShield = true;
+                    SetHasShield(true);
                     break;
                 case PowerUpType.PowerLaser:
-                    IsPowerLaserActive = true;
+                    SetIsPowerLaserActive(true);
                     break;
                 case PowerUpType.HealthRegeneration:
-                    Health += 1;
+                    SetHealth(Health + 1);
                     break;
             }
         }
 
         public void SetHasShield(bool hasShield)
         {
-            HasShield = hasShield;
+            if (HasShield != hasShield)
+            {
+                HasShield = hasShield;
+                OnShieldStatusChanged?.Invoke();
+            }
         }
 
         public void SetHealth(int health)
         {
-            Health = health;
+            if (Health != health)
+            {
+                Health = health;
+                OnHealthChanged?.Invoke(Health);
+            }
         }
 
         public void SetIsPowerLaserActive(bool isPowerLaserActive)
         {
-            IsPowerLaserActive = isPowerLaserActive;
+            if (IsPowerLaserActive != isPowerLaserActive)
+            {
+                IsPowerLaserActive = isPowerLaserActive;
+                OnPowerLaserStatusChanged?.Invoke();
+            }
         }
 
-        public void Update(int screenWidth, int screenHeight)
+        public void Update(KeyboardState keyboardState, int screenWidth, int screenHeight, List<Projectile> projectiles, GameTime gameTime)
         {
-            // Clamp player position to screen bounds
-            Position = new Vector2(
-                Math.Clamp(Position.X, 0, screenWidth),
-                Math.Clamp(Position.Y, 0, screenHeight)
-            );
+            if (!IsAlive) return;
+
+            Move(keyboardState, screenWidth, screenHeight);
+            Shoot(projectiles, gameTime);
         }
     }
 }

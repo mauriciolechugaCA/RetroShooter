@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RetroShooter.Scenes;
+using RetroShooter.Entities;
 
 namespace RetroShooter.Scenes
 {
@@ -18,10 +19,11 @@ namespace RetroShooter.Scenes
         private SpriteFont _menuTitlefont;
         private List<string> _menuItems;
         private int _selectedMenuItem;
-        private Game _game;
+        private Game1 _game;
         private KeyboardState _previousKeyboardState;
+        private Player _player; 
 
-        public StartScene(SpriteBatch spriteBatch, SpriteFont font, SpriteFont menuItemsfont, SpriteFont menuTitlefont, Game game)
+        public StartScene(SpriteBatch spriteBatch, SpriteFont font, SpriteFont menuItemsfont, SpriteFont menuTitlefont, Game game, Player player) 
         {
             _spriteBatch = spriteBatch;
             _font = font;
@@ -29,8 +31,9 @@ namespace RetroShooter.Scenes
             _menuTitlefont = menuTitlefont;
             _menuItems = new List<string> { "Play", "Help", "About", "Exit" };
             _selectedMenuItem = 0;
-            _game = game;
+            _game = (Game1)game;
             _previousKeyboardState = Keyboard.GetState();
+            _player = player; 
         }
 
         public override void Update(GameTime gameTime)
@@ -59,6 +62,7 @@ namespace RetroShooter.Scenes
                 {
                     case 0:
                         // TODO: Play
+                        SceneManager.ChangeScene(new PlayScene(_spriteBatch, _font, _player)); 
                         break;
                     case 1:
                         // TODO: Help
