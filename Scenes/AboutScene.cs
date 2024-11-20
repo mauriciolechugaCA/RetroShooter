@@ -27,12 +27,13 @@ namespace RetroShooter.Scenes
             {
                 "Retro Shooter v1.0",
                 " ",
-                "Developed by Mauricio Lechuga",
+                "Developed by",
+                "Mauricio Lechuga",
                 " ",
-                "Assets provided by Kenney",
-                "(www.kenney.nl)",
+                "Assets provided by",
+                "www.kenney.nl",
                 " ",
-                "Press Enter to return..."
+                "Enter to return..."
             };
             _previousKeyboardState = Keyboard.GetState();
         }
@@ -58,7 +59,7 @@ namespace RetroShooter.Scenes
                 var textSize = _creditsTitleFont.MeasureString(text);
                 var position = new Vector2(
                     (_game.GraphicsDevice.Viewport.Width - textSize.X) / 2,
-                    100 + i * 50
+                    225 + i * 50
                 );
 
                 spriteBatch.DrawString(_creditsTitleFont, text, position, Color.White);

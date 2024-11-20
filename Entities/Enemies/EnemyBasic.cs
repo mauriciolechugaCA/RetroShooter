@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 /*
  * Represents a basic enemy that only moves horizontally, vertically and diagonally randomly.
@@ -13,7 +14,7 @@ namespace RetroShooter.Entities.Enemies
 {
     internal class EnemyBasic : Enemy
     {
-        public EnemyBasic(Vector2 startPosition) : base(startPosition, 100, 1.0f, 10)
+        public EnemyBasic(Vector2 startPosition, Texture2D enemyBulletTexture) : base(startPosition, 100, 1.0f, 10, enemyBulletTexture)
         {
         }
         public override void Move()

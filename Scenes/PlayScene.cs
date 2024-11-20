@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RetroShooter.Entities;
+using RetroShooter.Entities.Enemies;
 using RetroShooter.Entities.Projectiles;
 using System.Collections.Generic;
 
@@ -13,26 +14,37 @@ namespace RetroShooter.Scenes
         private SpriteFont _hudFont;
         private Player _player;
         private List<Projectile> _projectiles;
+        private List<Enemy> _enemies;
+        private Texture2D _laserNormalTexture;
+        private Texture2D _enemyBulletTexture;
 
-        public PlayScene(SpriteBatch spriteBatch, SpriteFont hudFont, Player player)
+        public PlayScene(SpriteBatch spriteBatch, SpriteFont hudFont, Player player, Texture2D laserNormalTexture, Texture2D enemyBulletTexture)
         {
             _spriteBatch = spriteBatch;
             _hudFont = hudFont;
             _player = player;
             _projectiles = new List<Projectile>();
+            _enemies = new List<Enemy>();
+            _laserNormalTexture = laserNormalTexture;
+            _enemyBulletTexture = enemyBulletTexture;
+
+            _enemies.Add(new EnemyBasic(new Vector2(100, 100), _enemyBulletTexture));
+            _enemies.Add(new EnemyShooter(new Vector2(100, 100), _enemyBulletTexture));
+            _enemies.Add(new EnemyShielded(new Vector2(100, 100), _enemyBulletTexture));
+            
         }
 
         public override void Update(GameTime gameTime)
         {
             KeyboardState keyboardState = Keyboard.GetState();
 
-            // Update player
             _player.Update(
                 keyboardState,
-                800,  // screen width
-                1200, // screen height
+                768,  // screen width
+                1024, // screen height
                 _projectiles,
-                gameTime
+                gameTime,
+                _laserNormalTexture
             );
 
             // Update projectiles
@@ -41,7 +53,7 @@ namespace RetroShooter.Scenes
                 _projectiles[i].Update();
 
                 // Remove projectiles that are out of bounds
-                if (_projectiles[i].IsOutOfBounds(800, 1200))
+                if (_projectiles[i].IsOutOfBounds(768, 1024))
                 {
                     _projectiles.RemoveAt(i);
                 }
@@ -52,19 +64,26 @@ namespace RetroShooter.Scenes
         {
             _spriteBatch.Begin();
 
-            // Draw player
             _player.Draw(_spriteBatch);
 
             // Draw projectiles
             foreach (var projectile in _projectiles)
             {
-                // You'll need to implement projectile drawing
-                // This depends on how you want to represent projectiles visually
+                projectile.Draw(_spriteBatch);
             }
 
             // Draw HUD
-            _spriteBatch.DrawString(_hudFont, $"Health: {_player.Health}", new Vector2(10, 10), Color.White);
-            _spriteBatch.DrawString(_hudFont, $"Score: {_player.Score}", new Vector2(10, 40), Color.White);
+            string healthText = $"Health: {_player.Health}";
+            string scoreText = $"Score: {_player.Score}";
+
+            // Calculate positions to align text in the corners
+            Vector2 healthTextPosition = new Vector2(30, 15);
+            Vector2 scoreSize = _hudFont.MeasureString(scoreText);
+            Vector2 scoreTextPosition = new Vector2(_spriteBatch.GraphicsDevice.Viewport.Width - scoreSize.X - 30, 15);
+
+            // Draw texts
+            _spriteBatch.DrawString(_hudFont, healthText, healthTextPosition, Color.White);
+            _spriteBatch.DrawString(_hudFont, scoreText, scoreTextPosition, Color.White);
 
             _spriteBatch.End();
         }

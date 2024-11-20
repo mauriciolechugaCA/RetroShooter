@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Numerics;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 /*
  * Represents a challenging enemy that moves slower but shoots homing projectiles towards the player at a higher rate.
@@ -13,7 +14,7 @@ namespace RetroShooter.Entities.Enemies
 {
     internal class EnemyShooter : Enemy
     {
-        public EnemyShooter(Vector2 startPosition) : base(startPosition, 150, 0.75f, 100)
+        public EnemyShooter(Vector2 startPosition, Texture2D enemyBulletTexture) : base(startPosition, 150, 0.75f, 100, enemyBulletTexture)
         {
         }
         public override void Move()

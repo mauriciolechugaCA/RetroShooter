@@ -27,8 +27,10 @@ namespace RetroShooter
         private SpriteFont _menuItems;
 
         // Game objects
-        public Player player; // Make player public to access it in AboutScene
-        private Texture2D playerTexture;
+        public Player player; 
+        public Texture2D playerTexture;
+        public Texture2D laserNormalTexture;
+        public Texture2D enemyBulletTexture; 
 
         // Scene management
         private GameScene _currentScene;
@@ -47,8 +49,8 @@ namespace RetroShooter
         protected override void Initialize()
         {
             // Set the window size
-            _graphics.PreferredBackBufferWidth = 600;
-            _graphics.PreferredBackBufferHeight = 800;
+            _graphics.PreferredBackBufferWidth = 768;
+            _graphics.PreferredBackBufferHeight = 1024;
             _graphics.ApplyChanges();
 
             // Initialize the SceneManager
@@ -71,18 +73,15 @@ namespace RetroShooter
 
             // Load game textures
             playerTexture = Content.Load<Texture2D>("images/player/playerShip");
+            laserNormalTexture = Content.Load<Texture2D>("images/player/laserNormal");
+            enemyBulletTexture = Content.Load<Texture2D>("images/enemies/laserEnemy");
 
             // Initialize player
-            player = new Player(
-                new Vector2(GraphicsDevice.Viewport.Width / 2f, GraphicsDevice.Viewport.Height - 100),
-                100,  // Initial health
-                playerTexture,
-                0.5f  // Scale
-            );
+            Player player = new Player(new Vector2(400, 600), 3, playerTexture, 1.0f);
 
             // Initialize scenes
             _startScene = new StartScene(_spriteBatch, _font, _menuItems, _menuTitle, this, player);
-            _playScene = new PlayScene(_spriteBatch, _hudFont, player);
+            _playScene = new PlayScene(_spriteBatch, _hudFont, player, laserNormalTexture, enemyBulletTexture);
             _helpScene = new HelpScene(_spriteBatch, _font);
             _aboutScene = new AboutScene(_spriteBatch, _creditsTitleFont, _menuItems, _menuTitle, this);
 

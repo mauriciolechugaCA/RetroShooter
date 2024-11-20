@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Numerics;
+using Microsoft.Xna.Framework;
 using RetroShooter.Entities.Projectiles;
+using Microsoft.Xna.Framework.Graphics;
 
 /*
  * Represents a shielded enemy that appears on screen, and shoots vertically and horizontally.
@@ -15,8 +16,8 @@ namespace RetroShooter.Entities.Enemies
 {
     internal class EnemyShielded : Enemy
     {
-        public int ShieldHealth { get; private set; }
-        public EnemyShielded(Vector2 startPosition) : base(startPosition, 100, 1.0f, 50)
+        public int ShieldHealth { get; set; }
+        public EnemyShielded(Vector2 startPosition, Texture2D enemyBulletTexture) : base(startPosition, 100, 1.0f, 50, enemyBulletTexture)
         {
             ShieldHealth = 10;
         }
@@ -62,13 +63,13 @@ namespace RetroShooter.Entities.Enemies
         public override void Attack()
         {
             // Attack logic
-            var projectile = new Projectile(Position, new Vector2(0, 1), 5, 1);
+            var projectile = new Projectile(Position, new Vector2(0, 1), 5, 1, enemyBullet);
             projectiles.Add(projectile);
-            projectile = new Projectile(Position, new Vector2(0, -1), 5, 1);
+            projectile = new Projectile(Position, new Vector2(0, -1), 5, 1, enemyBullet);
             projectiles.Add(projectile);
-            projectile = new Projectile(Position, new Vector2(1, 0), 5, 1);
+            projectile = new Projectile(Position, new Vector2(1, 0), 5, 1, enemyBullet);
             projectiles.Add(projectile);
-            projectile = new Projectile(Position, new Vector2(-1, 0), 5, 1);
+            projectile = new Projectile(Position, new Vector2(-1, 0), 5, 1, enemyBullet);
             projectiles.Add(projectile);
         }
     }

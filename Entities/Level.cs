@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using RetroShooter.Entities.Enemies;
-using Vector2 = System.Numerics.Vector2;
 
 /*
  * Level class that can mange enemies, spawning and progression logic.
@@ -19,11 +19,13 @@ namespace RetroShooter.Entities
         private List<Enemy> enemies;
         private float spawnRate;
         private float lastSpawnTime;
+        private Texture2D enemyBulletTexture;
 
-        public Level(int levelNumber, float spawnRate)
+        public Level(int levelNumber, float spawnRate, Texture2D enemyBulletTexture)
         {
             LevelNumber = levelNumber;
             this.spawnRate = spawnRate;
+            this.enemyBulletTexture = enemyBulletTexture;
             enemies = new List<Enemy>();
         }
 
@@ -64,16 +66,16 @@ namespace RetroShooter.Entities
             switch (LevelNumber)
             {
                 case 1:
-                    enemy = new EnemyBasic(position);
+                    enemy = new EnemyBasic(position, enemyBulletTexture);
                     break;
                 case 2:
-                    enemy = new EnemyFast(position);
+                    enemy = new EnemyFast(position, enemyBulletTexture);
                     break;
                 case 3:
-                    enemy = new EnemyShielded(position);
+                    enemy = new EnemyShielded(position, enemyBulletTexture);
                     break;
                 case 4:
-                    enemy = new EnemyShooter(position);
+                    enemy = new EnemyShooter(position, enemyBulletTexture);
                     break;
             }
 

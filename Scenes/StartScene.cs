@@ -62,7 +62,7 @@ namespace RetroShooter.Scenes
                 {
                     case 0:
                         // TODO: Play
-                        SceneManager.ChangeScene(new PlayScene(_spriteBatch, _font, _player)); 
+                        SceneManager.ChangeScene(new PlayScene(_spriteBatch, _font, _player, _game.laserNormalTexture, _game.enemyBulletTexture)); 
                         break;
                     case 1:
                         // TODO: Help
@@ -89,7 +89,7 @@ namespace RetroShooter.Scenes
             // Draw the title
             string title = "Retro Shooter";
             var titleSize = _menuTitlefont.MeasureString(title);
-            var titlePosition = new Vector2((_game.GraphicsDevice.Viewport.Width - titleSize.X) / 2, 75);
+            var titlePosition = new Vector2((_game.GraphicsDevice.Viewport.Width - titleSize.X) / 2, 175);
 
             _spriteBatch.DrawString(_menuTitlefont, title, titlePosition, Color.White);
 
@@ -98,7 +98,7 @@ namespace RetroShooter.Scenes
             {
                 var text = _menuItems[i];
                 var textSize = _menuItemsfont.MeasureString(text);
-                var textPosition = new Vector2((_game.GraphicsDevice.Viewport.Width - textSize.X) / 2, 200 + i * 100);
+                var textPosition = new Vector2((_game.GraphicsDevice.Viewport.Width - textSize.X) / 2, 275 + i * 100);
                 var color = (i == _selectedMenuItem) ? Color.Yellow : Color.White;
                 _spriteBatch.DrawString(_menuItemsfont, text, textPosition, color);
             }

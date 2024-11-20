@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 /*
@@ -18,13 +19,15 @@ namespace RetroShooter.Entities.Projectiles
         public Vector2 Direction { get; set; }
         public float Speed { get; set; }
         public int Damage { get; set; }
+        private Texture2D texture;
 
-        public Projectile(Vector2 position, Vector2 direction, float speed, int damage)
+        public Projectile(Vector2 position, Vector2 direction, float speed, int damage, Texture2D texture)
         {
             Position = position;
             Direction = direction;
             Speed = speed;
             Damage = damage;
+            this.texture = texture;
         }
 
         public void Update()
@@ -38,6 +41,11 @@ namespace RetroShooter.Entities.Projectiles
                    Position.X > screenWidth ||
                    Position.Y < 0 ||
                    Position.Y > screenHeight;
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, Position, Color.White);
         }
     }
 }

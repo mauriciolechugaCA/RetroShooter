@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Numerics;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 /*
  * Represents a fast enemy that moves towards the player's last positon. No shooting behavior.
@@ -13,7 +14,7 @@ namespace RetroShooter.Entities.Enemies
 {
     internal class EnemyFast : Enemy
     {
-        public EnemyFast(Vector2 startPosition) : base(startPosition, 50, 3.0f, 25)
+        public EnemyFast(Vector2 startPosition, Texture2D enemyBulletTexture) : base(startPosition, 50, 3.0f, 25, enemyBulletTexture)
         {
         }
         public override void Move()

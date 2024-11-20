@@ -12,11 +12,11 @@ namespace RetroShooter.Entities
     {
         // Constants
         private const float DEFAULT_SPEED = 5f;
-        private const float DEFAULT_SHOOT_COOLDOWN = 0.5f;
-        private const float PROJECTILE_OFFSET_Y = -20f;
+        private const float DEFAULT_SHOOT_COOLDOWN = 0.2f;
+        private const float PROJECTILE_OFFSET_Y = -65f;
         private const int DEFAULT_POWER_LASER_DAMAGE = 2;
         private const int DEFAULT_NORMAL_DAMAGE = 1;
-        private static readonly Vector2 PROJECTILE_DIRECTION = new Vector2(0f, -1f);
+        private static readonly Vector2 PROJECTILE_DIRECTION_UP = new Vector2(0f, -1f);
 
         // Properties
         public Vector2 Position { get; set; }
@@ -125,10 +125,10 @@ namespace RetroShooter.Entities
         private Vector2 GetMovementDirection(KeyboardState keyboardState)
         {
             Vector2 direction = Vector2.Zero;
-            if (keyboardState.IsKeyDown(Keys.W)) direction.Y -= 1;
-            if (keyboardState.IsKeyDown(Keys.S)) direction.Y += 1;
-            if (keyboardState.IsKeyDown(Keys.A)) direction.X -= 1;
-            if (keyboardState.IsKeyDown(Keys.D)) direction.X += 1;
+            if (keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.Up)) direction.Y -= 1;
+            if (keyboardState.IsKeyDown(Keys.S) || keyboardState.IsKeyDown(Keys.Down)) direction.Y += 1;
+            if (keyboardState.IsKeyDown(Keys.A) || keyboardState.IsKeyDown(Keys.Left)) direction.X -= 1;
+            if (keyboardState.IsKeyDown(Keys.D) || keyboardState.IsKeyDown(Keys.Right)) direction.X += 1;
             return direction;
         }
 
@@ -140,11 +140,11 @@ namespace RetroShooter.Entities
             );
         }
 
-        public void Shoot(List<Projectile> projectiles, GameTime gameTime)
+        public void Shoot(List<Projectile> projectiles, GameTime gameTime, Vector2 direction, Texture2D laserNormalTexture)
         {
             if (!CanShoot(gameTime)) return;
 
-            CreateProjectile(projectiles);
+            CreateProjectile(projectiles, direction, laserNormalTexture);
             lastShotTime = (float)gameTime.TotalGameTime.TotalSeconds;
             OnProjectileFired?.Invoke();
         }
@@ -154,18 +154,19 @@ namespace RetroShooter.Entities
             return gameTime.TotalGameTime.TotalSeconds - lastShotTime > shootCooldown;
         }
 
-        private void CreateProjectile(List<Projectile> projectiles)
+        private void CreateProjectile(List<Projectile> projectiles, Vector2 direction, Texture2D laserNormalTexture)
         {
             Vector2 projectilePosition = new Vector2(
-                Position.X,
+                Position.X - 4,
                 Position.Y + PROJECTILE_OFFSET_Y
             );
 
             var projectile = new Projectile(
                 projectilePosition,
-                PROJECTILE_DIRECTION,
+                PROJECTILE_DIRECTION_UP,
                 10f,
-                IsPowerLaserActive ? DEFAULT_POWER_LASER_DAMAGE : DEFAULT_NORMAL_DAMAGE
+                IsPowerLaserActive ? DEFAULT_POWER_LASER_DAMAGE : DEFAULT_NORMAL_DAMAGE,
+                laserNormalTexture
             );
             projectiles.Add(projectile);
         }
@@ -237,12 +238,16 @@ namespace RetroShooter.Entities
             }
         }
 
-        public void Update(KeyboardState keyboardState, int screenWidth, int screenHeight, List<Projectile> projectiles, GameTime gameTime)
+        public void Update(KeyboardState keyboardState, int screenWidth, int screenHeight, List<Projectile> projectiles, GameTime gameTime, Texture2D _laserNormalTexture)
         {
             if (!IsAlive) return;
 
             Move(keyboardState, screenWidth, screenHeight);
-            Shoot(projectiles, gameTime);
+
+            if (keyboardState.IsKeyDown(Keys.Space))
+            {
+                Shoot(projectiles, gameTime, PROJECTILE_DIRECTION_UP, _laserNormalTexture);
+            }
         }
     }
 }
