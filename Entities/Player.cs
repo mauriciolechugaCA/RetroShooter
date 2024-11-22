@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RetroShooter.Entities.Powerups;
 using RetroShooter.Entities.Projectiles;
+using RetroShooter.Managers;
 using System;
 using System.Collections.Generic;
 
@@ -111,9 +112,9 @@ namespace RetroShooter.Entities
             origin = new Vector2(texture.Width / 2, texture.Height / 2);
         }
 
-        public void Move(KeyboardState keyboardState, int screenWidth, int screenHeight)
+        public void Move(InputManager inputManager, int screenWidth, int screenHeight)
         {
-            Vector2 direction = GetMovementDirection(keyboardState);
+            Vector2 direction = GetMovementDirection(inputManager);
             if (direction != Vector2.Zero)
             {
                 direction.Normalize();
@@ -122,15 +123,16 @@ namespace RetroShooter.Entities
             }
         }
 
-        private Vector2 GetMovementDirection(KeyboardState keyboardState)
+        private Vector2 GetMovementDirection(InputManager inputManager)
         {
             Vector2 direction = Vector2.Zero;
-            if (keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.Up)) direction.Y -= 1;
-            if (keyboardState.IsKeyDown(Keys.S) || keyboardState.IsKeyDown(Keys.Down)) direction.Y += 1;
-            if (keyboardState.IsKeyDown(Keys.A) || keyboardState.IsKeyDown(Keys.Left)) direction.X -= 1;
-            if (keyboardState.IsKeyDown(Keys.D) || keyboardState.IsKeyDown(Keys.Right)) direction.X += 1;
+            if (inputManager.IsKeyDown(Keys.W) || inputManager.IsKeyDown(Keys.Up)) direction.Y -= 1;
+            if (inputManager.IsKeyDown(Keys.S) || inputManager.IsKeyDown(Keys.Down)) direction.Y += 1;
+            if (inputManager.IsKeyDown(Keys.A) || inputManager.IsKeyDown(Keys.Left)) direction.X -= 1;
+            if (inputManager.IsKeyDown(Keys.D) || inputManager.IsKeyDown(Keys.Right)) direction.X += 1;
             return direction;
         }
+
 
         private void ClampPositionToScreen(int screenWidth, int screenHeight)
         {
@@ -238,13 +240,13 @@ namespace RetroShooter.Entities
             }
         }
 
-        public void Update(KeyboardState keyboardState, int screenWidth, int screenHeight, List<Projectile> projectiles, GameTime gameTime, Texture2D _laserNormalTexture)
+        public void Update(InputManager inputManager, int screenWidth, int screenHeight, List<Projectile> projectiles, GameTime gameTime, Texture2D _laserNormalTexture)
         {
             if (!IsAlive) return;
 
-            Move(keyboardState, screenWidth, screenHeight);
+            Move(inputManager, screenWidth, screenHeight);
 
-            if (keyboardState.IsKeyDown(Keys.Space))
+            if (inputManager.IsKeyDown(Keys.Space))
             {
                 Shoot(projectiles, gameTime, PROJECTILE_DIRECTION_UP, _laserNormalTexture);
             }

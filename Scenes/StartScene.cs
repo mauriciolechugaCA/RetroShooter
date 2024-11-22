@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RetroShooter.Scenes;
 using RetroShooter.Entities;
+using RetroShooter.Managers;
 
 namespace RetroShooter.Scenes
 {
@@ -20,7 +21,7 @@ namespace RetroShooter.Scenes
         private List<string> _menuItems;
         private int _selectedMenuItem;
         private Game1 _game;
-        private KeyboardState _previousKeyboardState;
+        private InputManager _inputManager;
         private Player _player; 
 
         public StartScene(SpriteBatch spriteBatch, SpriteFont font, SpriteFont menuItemsfont, SpriteFont menuTitlefont, Game game, Player player) 
@@ -32,15 +33,15 @@ namespace RetroShooter.Scenes
             _menuItems = new List<string> { "Play", "Help", "About", "Exit" };
             _selectedMenuItem = 0;
             _game = (Game1)game;
-            _previousKeyboardState = Keyboard.GetState();
+            _inputManager = new InputManager();
             _player = player; 
         }
 
         public override void Update(GameTime gameTime)
         {
-            var keyboardState = Keyboard.GetState();
+            _inputManager.Update();
 
-            if (keyboardState.IsKeyDown(Keys.Up) && !_previousKeyboardState.IsKeyDown(Keys.Up))
+            if (_inputManager.IsKeyPressed(Keys.Up) || _inputManager.IsKeyPressed(Keys.W))
             {
                 _selectedMenuItem--;
                 if (_selectedMenuItem < 0)
@@ -48,7 +49,7 @@ namespace RetroShooter.Scenes
                     _selectedMenuItem = _menuItems.Count - 1;
                 }
             }
-            else if (keyboardState.IsKeyDown(Keys.Down) && !_previousKeyboardState.IsKeyDown(Keys.Down))
+            else if (_inputManager.IsKeyPressed(Keys.Down) || _inputManager.IsKeyPressed(Keys.S))
             {
                 _selectedMenuItem++;
                 if (_selectedMenuItem >= _menuItems.Count)
@@ -56,7 +57,7 @@ namespace RetroShooter.Scenes
                     _selectedMenuItem = 0;
                 }
             }
-            else if (keyboardState.IsKeyDown(Keys.Enter) && !_previousKeyboardState.IsKeyDown(Keys.Enter))
+            else if (_inputManager.IsKeyPressed(Keys.Enter))
             {
                 switch (_selectedMenuItem)
                 {
@@ -78,8 +79,6 @@ namespace RetroShooter.Scenes
                         break;
                 }
             }
-
-            _previousKeyboardState = keyboardState;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

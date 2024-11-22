@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using RetroShooter.Entities;
 using RetroShooter.Entities.Enemies;
 using RetroShooter.Entities.Projectiles;
+using RetroShooter.Managers;
 using System.Collections.Generic;
 
 namespace RetroShooter.Scenes
@@ -17,6 +18,7 @@ namespace RetroShooter.Scenes
         private List<Enemy> _enemies;
         private Texture2D _laserNormalTexture;
         private Texture2D _enemyBulletTexture;
+        private InputManager _inputManager;
 
         public PlayScene(SpriteBatch spriteBatch, SpriteFont hudFont, Player player, Texture2D laserNormalTexture, Texture2D enemyBulletTexture)
         {
@@ -27,6 +29,7 @@ namespace RetroShooter.Scenes
             _enemies = new List<Enemy>();
             _laserNormalTexture = laserNormalTexture;
             _enemyBulletTexture = enemyBulletTexture;
+            _inputManager = new InputManager();
 
             _enemies.Add(new EnemyBasic(new Vector2(100, 100), _enemyBulletTexture));
             _enemies.Add(new EnemyShooter(new Vector2(100, 100), _enemyBulletTexture));
@@ -34,10 +37,10 @@ namespace RetroShooter.Scenes
 
         public override void Update(GameTime gameTime)
         {
-            KeyboardState keyboardState = Keyboard.GetState();
+            _inputManager.Update();
 
             _player.Update(
-                keyboardState,
+                _inputManager,
                 768,  // screen width
                 1024, // screen height
                 _projectiles,

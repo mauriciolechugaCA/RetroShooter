@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using RetroShooter.Managers;
 
 namespace RetroShooter.Scenes
 {
@@ -13,8 +14,8 @@ namespace RetroShooter.Scenes
         private SpriteFont _menuItemsfont;
         private SpriteFont _menuTitlefont;
         private List<string> _aboutText;
-        private Game1 _game; // Change type to Game1 to access player
-        private KeyboardState _previousKeyboardState;
+        private Game1 _game;
+        private InputManager _inputManager;
 
         public AboutScene(SpriteBatch spriteBatch, SpriteFont creditsTitleFont, SpriteFont menuItemsfont, SpriteFont menuTitlefont, Game1 game)
         {
@@ -35,24 +36,24 @@ namespace RetroShooter.Scenes
                 " ",
                 "Enter to return..."
             };
-            _previousKeyboardState = Keyboard.GetState();
+            _inputManager = new InputManager();
         }
 
         public override void Update(GameTime gameTime)
         {
-            var keyboardState = Keyboard.GetState();
-            if (keyboardState.IsKeyDown(Keys.Enter) && !_previousKeyboardState.IsKeyDown(Keys.Enter))
+            _inputManager.Update();
+
+            if (_inputManager.IsKeyPressed(Keys.Enter))
             {
                 // Switches to the StartScene using the SceneManager
-                SceneManager.ChangeScene(new StartScene(_spriteBatch, _creditsTitleFont, _menuItemsfont, _menuTitlefont, _game, _game.player)); // Pass player
+                SceneManager.ChangeScene(new StartScene(_spriteBatch, _creditsTitleFont, _menuItemsfont, _menuTitlefont, _game, _game.player));
             }
-
-            _previousKeyboardState = keyboardState;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
+
             for (int i = 0; i < _aboutText.Count; i++)
             {
                 var text = _aboutText[i];
