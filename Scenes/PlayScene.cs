@@ -30,8 +30,6 @@ namespace RetroShooter.Scenes
 
             _enemies.Add(new EnemyBasic(new Vector2(100, 100), _enemyBulletTexture));
             _enemies.Add(new EnemyShooter(new Vector2(100, 100), _enemyBulletTexture));
-            _enemies.Add(new EnemyShielded(new Vector2(100, 100), _enemyBulletTexture));
-            
         }
 
         public override void Update(GameTime gameTime)

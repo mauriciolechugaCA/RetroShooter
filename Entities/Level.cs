@@ -69,12 +69,6 @@ namespace RetroShooter.Entities
                     enemy = new EnemyBasic(position, enemyBulletTexture);
                     break;
                 case 2:
-                    enemy = new EnemyFast(position, enemyBulletTexture);
-                    break;
-                case 3:
-                    enemy = new EnemyShielded(position, enemyBulletTexture);
-                    break;
-                case 4:
                     enemy = new EnemyShooter(position, enemyBulletTexture);
                     break;
             }
