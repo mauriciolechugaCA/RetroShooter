@@ -11,37 +11,13 @@ using System.Threading.Tasks;
 
 namespace RetroShooter.Entities.Powerups
 {
-    public enum PowerUpType
-    {
-        HealthRegeneration,
-        PowerLaser
-    }
-
-    public class Powerup
+    public abstract class Powerup
     {
         public Vector2 Position { get; private set; }
-        public PowerUpType Type { get; private set; }
-        public float Duration { get; private set; }
-
-
-        public Powerup(Vector2 position, PowerUpType type, float duration = 0)
+        public Powerup(Vector2 position)
         {
             Position = position;
-            Type = type;
-            Duration = duration;
         }
-
-        public void ApplyEffect(Player player)
-        {
-            switch (Type)
-            {
-                case PowerUpType.HealthRegeneration:
-                    player.SetHealth(player.Health + 1); // Assuming 1 is the health increment
-                    break;
-                case PowerUpType.PowerLaser:
-                    player.SetIsPowerLaserActive(true);
-                    break;
-            }
-        }
+        public abstract void ApplyEffect(Player player);
     }
 }

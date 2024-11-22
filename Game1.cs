@@ -33,6 +33,8 @@ namespace RetroShooter
         public Texture2D laserNormalTexture;
         public Texture2D enemyBulletTexture; 
         public Texture2D enemyTexture;
+        public Texture2D powerupHealthTexture;
+        public Texture2D powerupLaserTexture;
 
         // Scene management
         private GameScene _currentScene;
@@ -91,12 +93,16 @@ namespace RetroShooter
             enemyBulletTexture = Content.Load<Texture2D>("images/enemies/laserEnemy");
             enemyTexture = Content.Load<Texture2D>("images/enemies/enemyShip1");
 
+            // Load powerup textures
+            powerupHealthTexture = Content.Load<Texture2D>("images/powerups/powerupHealth");
+            powerupLaserTexture = Content.Load<Texture2D>("images/powerups/powerupLaser");
+
             // Initialize player
             PlayerManager = new PlayerManager(new Vector2(400, 600), 4, playerTexture, 1.0f);
 
             // Initialize scenes
             _startScene = new StartScene(_spriteBatch, _font, _menuItems, _menuTitle, this, PlayerManager.Player);
-            _playScene = new PlayScene(_spriteBatch, _hudFont, PlayerManager.Player, laserNormalTexture, enemyBulletTexture, enemyTexture);
+            _playScene = new PlayScene(_spriteBatch, _hudFont, PlayerManager.Player, laserNormalTexture, enemyBulletTexture, enemyTexture, powerupHealthTexture, powerupLaserTexture);
             _helpScene = new HelpScene(_spriteBatch, _font);
             _aboutScene = new AboutScene(_spriteBatch, _creditsTitleFont, _menuItems, _menuTitle, this);
 

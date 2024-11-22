@@ -9,16 +9,11 @@ using Microsoft.Xna.Framework;
 
 namespace RetroShooter.Entities.Powerups
 {
-    internal class PowerupHealth
+    internal class PowerupHealth : Powerup
     {
-        public Vector2 Position { get; private set; }
-        public float Duration { get; private set; }
-        public PowerupHealth(Vector2 position, float duration = 0)
-        {
-            Position = position;
-            Duration = duration;
-        }
-        public void ApplyEffect(Player player)
+        public PowerupHealth(Vector2 position) : base(position) { }
+
+        public override void ApplyEffect(Player player)
         {
             player.SetHealth(player.Health + 1);
         }

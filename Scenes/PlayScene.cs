@@ -19,9 +19,12 @@ namespace RetroShooter.Scenes
         private List<Projectile> _projectiles;
         private InputManager _inputManager;
         private EnemyManager _enemyManager;
+        private PowerupManager _powerupManager;
         private Texture2D _enemyTexture;
+        private Texture2D _powerupHealthTexture;
+        private Texture2D _powerupLaserTexture;
 
-        public PlayScene(SpriteBatch spriteBatch, SpriteFont hudFont, Player player, Texture2D laserNormalTexture, Texture2D enemyBulletTexture, Texture2D enemyTexture)
+        public PlayScene(SpriteBatch spriteBatch, SpriteFont hudFont, Player player, Texture2D laserNormalTexture, Texture2D enemyBulletTexture, Texture2D enemyTexture, Texture2D powerupHealthTexture, Texture2D powerupLaserTexture)
         {
             _spriteBatch = spriteBatch;
             _hudFont = hudFont;
@@ -32,6 +35,9 @@ namespace RetroShooter.Scenes
             _inputManager = new InputManager();
             _enemyTexture = enemyTexture;
             _enemyManager = new EnemyManager(_enemyTexture, enemyBulletTexture);
+            _powerupHealthTexture = powerupHealthTexture;
+            _powerupLaserTexture = powerupLaserTexture;
+            _powerupManager = new PowerupManager(_powerupHealthTexture, _powerupLaserTexture);
         }
 
         public override void Update(GameTime gameTime)
@@ -55,6 +61,8 @@ namespace RetroShooter.Scenes
             {
                 _enemyManager.SpawnEnemy(new Vector2(100, 100), "Basic");
             }
+
+            _powerupManager.Update(gameTime, _player);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -72,6 +80,10 @@ namespace RetroShooter.Scenes
 
             // Draw enemies
             _enemyManager.Draw(_spriteBatch);
+
+            // Draw power-ups
+            _powerupManager.Draw(_spriteBatch);
+
 
             // Draw HUD
             string healthText = $"Health: {_player.Health}";

@@ -200,23 +200,16 @@ namespace RetroShooter.Entities
 
         public void ApplyEffect(Powerup powerUp)
         {
-            switch (powerUp.Type)
+            switch (powerUp)
             {
-                case PowerUpType.PowerLaser:
-                    SetIsPowerLaserActive(true);
-                    break;
-                case PowerUpType.HealthRegeneration:
+                case PowerupHealth:
                     SetHealth(Health + 1);
                     break;
-            }
-        }
-
-        public void SetHasShield(bool hasShield)
-        {
-            if (HasShield != hasShield)
-            {
-                HasShield = hasShield;
-                OnShieldStatusChanged?.Invoke();
+                case PowerupLaser:
+                    SetIsPowerLaserActive(true);
+                    break;
+                default:
+                    throw new ArgumentException("Unknown powerup type");
             }
         }
 
