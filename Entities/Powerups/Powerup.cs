@@ -13,7 +13,6 @@ namespace RetroShooter.Entities.Powerups
 {
     public enum PowerUpType
     {
-        Shield,
         HealthRegeneration,
         PowerLaser
     }
@@ -36,9 +35,6 @@ namespace RetroShooter.Entities.Powerups
         {
             switch (Type)
             {
-                case PowerUpType.Shield:
-                    player.SetHasShield(true);
-                    break;
                 case PowerUpType.HealthRegeneration:
                     player.SetHealth(player.Health + 1); // Assuming 1 is the health increment
                     break;

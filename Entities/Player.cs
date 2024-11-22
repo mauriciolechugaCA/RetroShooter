@@ -202,9 +202,6 @@ namespace RetroShooter.Entities
         {
             switch (powerUp.Type)
             {
-                case PowerUpType.Shield:
-                    SetHasShield(true);
-                    break;
                 case PowerUpType.PowerLaser:
                     SetIsPowerLaserActive(true);
                     break;
