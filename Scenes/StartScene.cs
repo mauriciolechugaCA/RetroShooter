@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using RetroShooter.Scenes;
 using RetroShooter.Entities;
 using RetroShooter.Managers;
 

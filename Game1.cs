@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RetroShooter.Scenes;
 using RetroShooter.Entities;
+using RetroShooter.Managers;
 
 namespace RetroShooter
 {
