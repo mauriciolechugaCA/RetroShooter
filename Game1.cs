@@ -28,7 +28,7 @@ namespace RetroShooter
         private SpriteFont _menuItems;
 
         // Game objects
-        public Player GamePlayer { get; private set; }
+        public PlayerManager PlayerManager { get; private set; }
         public Texture2D playerTexture;
         public Texture2D laserNormalTexture;
         public Texture2D enemyBulletTexture; 
@@ -51,7 +51,7 @@ namespace RetroShooter
         {
             base.Initialize();
 
-            GamePlayer = new Player(new Vector2(400, 600), 4, playerTexture, 1.0f);
+            PlayerManager = new PlayerManager(new Vector2(400, 600), 4, playerTexture, 1.0f);
 
             // Initialize first scene
             SceneManager.ChangeScene(new StartScene(
@@ -60,7 +60,7 @@ namespace RetroShooter
                 _menuItems,
                 _menuTitle,
                 this,
-                GamePlayer
+                PlayerManager.Player
             ));
 
             // Set the window size
@@ -90,11 +90,11 @@ namespace RetroShooter
             enemyBulletTexture = Content.Load<Texture2D>("images/enemies/laserEnemy");
 
             // Initialize player
-            //Player player = new Player(new Vector2(400, 600), 4, playerTexture, 1.0f);
+            PlayerManager = new PlayerManager(new Vector2(400, 600), 4, playerTexture, 1.0f);
 
             // Initialize scenes
-            _startScene = new StartScene(_spriteBatch, _font, _menuItems, _menuTitle, this, GamePlayer);
-            _playScene = new PlayScene(_spriteBatch, _hudFont, GamePlayer, laserNormalTexture, enemyBulletTexture);
+            _startScene = new StartScene(_spriteBatch, _font, _menuItems, _menuTitle, this, PlayerManager.Player);
+            _playScene = new PlayScene(_spriteBatch, _hudFont, PlayerManager.Player, laserNormalTexture, enemyBulletTexture);
             _helpScene = new HelpScene(_spriteBatch, _font);
             _aboutScene = new AboutScene(_spriteBatch, _creditsTitleFont, _menuItems, _menuTitle, this);
 
