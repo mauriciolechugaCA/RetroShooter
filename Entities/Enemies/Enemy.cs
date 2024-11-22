@@ -15,40 +15,39 @@ namespace RetroShooter.Entities.Enemies
 {
     public abstract class Enemy
     {
-        public Vector2 Position { get; protected set; }
-        public int Health { get; protected set; }
-        public float Speed { get; protected set; }
-        public int Points { get; protected set; }
-        protected List<Projectile> projectiles;
-        public Texture2D enemyBullet;
+        protected Vector2 position;
+        protected int health;
+        protected float speed;
+        protected int damage;
+        protected Texture2D texture;
 
-        public Enemy(Vector2 startPosition, int health, float speed, int points, Texture2D enemyBulletTexture)
+        public bool IsAlive => health > 0;
+
+        protected Enemy(Vector2 startPosition, int health, float speed, int damage, Texture2D texture)
         {
-            Position = startPosition;
-            Health = health;
-            Speed = speed;
-            Points = points;
-            projectiles = new List<Projectile>();
-            enemyBullet = enemyBulletTexture;
+            this.position = startPosition;
+            this.health = health;
+            this.speed = speed;
+            this.damage = damage;
+            this.texture = texture;
         }
 
-        public abstract void Move();
+        public abstract void Move(Player player);
 
-        public virtual void TakeDamage(int damage)
+        public void Update(GameTime gameTime, Player player)
         {
-            Health -= damage;
+            Move(player);
+            // Additional update logic (e.g., shooting, collision detection)
         }
 
-        public virtual void Attack()
+        public void Draw(SpriteBatch spriteBatch)
         {
-            // Attack logic
-            var projectile = new Projectile(Position, new Vector2(0, 1), 5, 1, enemyBullet);
-            projectiles.Add(projectile);
+            spriteBatch.Draw(texture, position, Color.White);
         }
 
-        public bool IsDead()
+        public void TakeDamage(int amount)
         {
-            return Health <= 0;
+            health -= amount;
         }
     }
 }

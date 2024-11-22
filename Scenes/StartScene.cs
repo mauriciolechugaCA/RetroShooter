@@ -61,7 +61,7 @@ namespace RetroShooter.Scenes
                 switch (_selectedMenuItem)
                 {
                     case 0:
-                        SceneManager.ChangeScene(new PlayScene(_spriteBatch, _font, _game.PlayerManager.Player, _game.laserNormalTexture, _game.enemyBulletTexture)); 
+                        SceneManager.ChangeScene(new PlayScene(_spriteBatch, _font, _game.PlayerManager.Player, _game.laserNormalTexture, _game.enemyBulletTexture, _game.enemyTexture)); 
                         break;
                     case 1:
                         SceneManager.ChangeScene(new HelpScene(_spriteBatch, _font));

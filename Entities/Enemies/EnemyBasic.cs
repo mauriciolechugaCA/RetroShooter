@@ -12,41 +12,18 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RetroShooter.Entities.Enemies
 {
-    internal class EnemyBasic : Enemy
+    public class EnemyBasic : Enemy
     {
-        public EnemyBasic(Vector2 startPosition, Texture2D enemyBulletTexture) : base(startPosition, 100, 1.0f, 10, enemyBulletTexture)
+        public EnemyBasic(Vector2 startPosition, Texture2D texture) : base(startPosition, 100, 1.0f, 50, texture)
         {
         }
-        public override void Move()
+
+        public override void Move(Player player)
         {
-            // Move logic to make them move horizontally, vertically and diagonally randomly
-
-            // Randomly choose a direction to move in
-            Random random = new Random();
-            int direction = random.Next(0, 4);
-
-            // Move the enemy in the chosen direction
-            switch (direction)
-            {
-                case 0:
-                    Position += new Vector2(1, 0) * Speed;
-                    break;
-                case 1:
-                    Position += new Vector2(-1, 0) * Speed;
-                    break;
-                case 2:
-                    Position += new Vector2(0, 1) * Speed;
-                    break;
-                case 3:
-                    Position += new Vector2(0, -1) * Speed;
-                    break;
-            }
-
-            // If the enemy is close to the edge of the screen, change direction
-            if (Position.X < 0 || Position.X > 800 || Position.Y < 0 || Position.Y > 600)
-            {
-                Position = new Vector2(400, 300);
-            }
+            // Basic movement logic (e.g., move towards the player)
+            Vector2 direction = player.Position - position;
+            direction.Normalize();
+            position += direction * speed;
         }
     }
 }

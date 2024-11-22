@@ -12,18 +12,20 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RetroShooter.Entities.Enemies
 {
-    internal class EnemyShooter : Enemy
+    public class EnemyShooter : Enemy
     {
         public EnemyShooter(Vector2 startPosition, Texture2D enemyBulletTexture) : base(startPosition, 150, 0.75f, 100, enemyBulletTexture)
         {
         }
-        public override void Move()
+
+        public override void Move(Player player)
         {
             // Move logic to make them move towards the player's last position
-            // Get the direction to the player's last position
-            // Normalize the direction vector
-            // Move the enemy towards the player's last position
-            // If the enemy is close enough to the player's last position, stop moving
+            Vector2 direction = player.Position - position;
+            direction.Normalize();
+            position += direction * speed;
         }
+
+        // Additional shooting logic can be added here
     }
 }

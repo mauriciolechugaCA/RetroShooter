@@ -18,8 +18,10 @@ namespace RetroShooter.Scenes
         private Texture2D _enemyBulletTexture;
         private List<Projectile> _projectiles;
         private InputManager _inputManager;
+        private EnemyManager _enemyManager;
+        private Texture2D _enemyTexture;
 
-        public PlayScene(SpriteBatch spriteBatch, SpriteFont hudFont, Player player, Texture2D laserNormalTexture, Texture2D enemyBulletTexture)
+        public PlayScene(SpriteBatch spriteBatch, SpriteFont hudFont, Player player, Texture2D laserNormalTexture, Texture2D enemyBulletTexture, Texture2D enemyTexture)
         {
             _spriteBatch = spriteBatch;
             _hudFont = hudFont;
@@ -28,6 +30,8 @@ namespace RetroShooter.Scenes
             _enemyBulletTexture = enemyBulletTexture;
             _projectiles = new List<Projectile>();
             _inputManager = new InputManager();
+            _enemyTexture = enemyTexture;
+            _enemyManager = new EnemyManager(_enemyTexture, enemyBulletTexture);
         }
 
         public override void Update(GameTime gameTime)
@@ -43,6 +47,14 @@ namespace RetroShooter.Scenes
 
             // Remove out-of-bounds projectiles
             _projectiles.RemoveAll(p => p.IsOutOfBounds(768, 1024));
+
+            // Update enemies
+            _enemyManager.Update(gameTime, _player);
+
+            if (gameTime.TotalGameTime.TotalSeconds % 5 == 0) // Spawn an enemy every 5 seconds
+            {
+                _enemyManager.SpawnEnemy(new Vector2(100, 100), "Basic");
+            }
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -57,6 +69,9 @@ namespace RetroShooter.Scenes
             {
                 projectile.Draw(_spriteBatch);
             }
+
+            // Draw enemies
+            _enemyManager.Draw(_spriteBatch);
 
             // Draw HUD
             string healthText = $"Health: {_player.Health}";
