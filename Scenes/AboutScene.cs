@@ -46,7 +46,7 @@ namespace RetroShooter.Scenes
             if (_inputManager.IsKeyPressed(Keys.Enter) || _inputManager.IsKeyPressed(Keys.Escape))
             {
                 // Switches to the StartScene using the SceneManager
-                SceneManager.ChangeScene(new StartScene(_spriteBatch, _creditsTitleFont, _menuItemsfont, _menuTitlefont, _game, _game.GamePlayer));
+                SceneManager.ChangeScene(new StartScene(_spriteBatch, _creditsTitleFont, _menuItemsfont, _menuTitlefont, _game, _game.PlayerManager.Player));
             }
         }
 

@@ -14,10 +14,9 @@ namespace RetroShooter.Scenes
         private SpriteBatch _spriteBatch;
         private SpriteFont _hudFont;
         private Player _player;
-        private List<Projectile> _projectiles;
-        private List<Enemy> _enemies;
         private Texture2D _laserNormalTexture;
         private Texture2D _enemyBulletTexture;
+        private List<Projectile> _projectiles;
         private InputManager _inputManager;
 
         public PlayScene(SpriteBatch spriteBatch, SpriteFont hudFont, Player player, Texture2D laserNormalTexture, Texture2D enemyBulletTexture)
@@ -25,46 +24,32 @@ namespace RetroShooter.Scenes
             _spriteBatch = spriteBatch;
             _hudFont = hudFont;
             _player = player;
-            _projectiles = new List<Projectile>();
-            _enemies = new List<Enemy>();
             _laserNormalTexture = laserNormalTexture;
             _enemyBulletTexture = enemyBulletTexture;
+            _projectiles = new List<Projectile>();
             _inputManager = new InputManager();
-
-            _enemies.Add(new EnemyBasic(new Vector2(100, 100), _enemyBulletTexture));
-            _enemies.Add(new EnemyShooter(new Vector2(100, 100), _enemyBulletTexture));
         }
 
         public override void Update(GameTime gameTime)
         {
             _inputManager.Update();
-
-            _player.Update(
-                _inputManager,
-                768,  // screen width
-                1024, // screen height
-                _projectiles,
-                gameTime,
-                _laserNormalTexture
-            );
+            _player.Update(_inputManager, 768, 1024, _projectiles, gameTime, _laserNormalTexture);
 
             // Update projectiles
-            for (int i = _projectiles.Count - 1; i >= 0; i--)
+            foreach (var projectile in _projectiles)
             {
-                _projectiles[i].Update();
-
-                // Remove projectiles that are out of bounds
-                if (_projectiles[i].IsOutOfBounds(768, 1024))
-                {
-                    _projectiles.RemoveAt(i);
-                }
+                projectile.Update();
             }
+
+            // Remove out-of-bounds projectiles
+            _projectiles.RemoveAll(p => p.IsOutOfBounds(768, 1024));
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             _spriteBatch.Begin();
 
+            // Draw player
             _player.Draw(_spriteBatch);
 
             // Draw projectiles
