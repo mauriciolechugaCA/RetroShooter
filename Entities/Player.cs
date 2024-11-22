@@ -6,6 +6,7 @@ using RetroShooter.Entities.Projectiles;
 using RetroShooter.Managers;
 using System;
 using System.Collections.Generic;
+using RetroShooter.Entities;
 
 namespace RetroShooter.Entities
 {

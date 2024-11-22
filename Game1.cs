@@ -27,7 +27,7 @@ namespace RetroShooter
         private SpriteFont _menuItems;
 
         // Game objects
-        public Player player; 
+        public Player GamePlayer { get; private set; }
         public Texture2D playerTexture;
         public Texture2D laserNormalTexture;
         public Texture2D enemyBulletTexture; 
@@ -48,6 +48,20 @@ namespace RetroShooter
 
         protected override void Initialize()
         {
+            base.Initialize();
+
+            GamePlayer = new Player(new Vector2(400, 600), 4, playerTexture, 1.0f);
+
+            // Initialize first scene
+            SceneManager.ChangeScene(new StartScene(
+                _spriteBatch,
+                _font,
+                _menuItems,
+                _menuTitle,
+                this,
+                GamePlayer
+            ));
+
             // Set the window size
             _graphics.PreferredBackBufferWidth = 768;
             _graphics.PreferredBackBufferHeight = 1024;
@@ -56,8 +70,6 @@ namespace RetroShooter
             // Initialize the SceneManager
             SceneManager.Initialize(this);
             _currentScene = GameScene.Start;
-
-            base.Initialize();
         }
 
         protected override void LoadContent()
@@ -77,11 +89,11 @@ namespace RetroShooter
             enemyBulletTexture = Content.Load<Texture2D>("images/enemies/laserEnemy");
 
             // Initialize player
-            Player player = new Player(new Vector2(400, 600), 3, playerTexture, 1.0f);
+            //Player player = new Player(new Vector2(400, 600), 4, playerTexture, 1.0f);
 
             // Initialize scenes
-            _startScene = new StartScene(_spriteBatch, _font, _menuItems, _menuTitle, this, player);
-            _playScene = new PlayScene(_spriteBatch, _hudFont, player, laserNormalTexture, enemyBulletTexture);
+            _startScene = new StartScene(_spriteBatch, _font, _menuItems, _menuTitle, this, GamePlayer);
+            _playScene = new PlayScene(_spriteBatch, _hudFont, GamePlayer, laserNormalTexture, enemyBulletTexture);
             _helpScene = new HelpScene(_spriteBatch, _font);
             _aboutScene = new AboutScene(_spriteBatch, _creditsTitleFont, _menuItems, _menuTitle, this);
 

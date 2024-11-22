@@ -57,13 +57,13 @@ namespace RetroShooter.Scenes
                     _selectedMenuItem = 0;
                 }
             }
-            else if (_inputManager.IsKeyPressed(Keys.Enter))
+            else if (_inputManager.IsKeyPressed(Keys.Enter) || _inputManager.IsKeyPressed(Keys.Space))
             {
                 switch (_selectedMenuItem)
                 {
                     case 0:
                         // TODO: Play
-                        SceneManager.ChangeScene(new PlayScene(_spriteBatch, _font, _player, _game.laserNormalTexture, _game.enemyBulletTexture)); 
+                        SceneManager.ChangeScene(new PlayScene(_spriteBatch, _font, _game.GamePlayer, _game.laserNormalTexture, _game.enemyBulletTexture)); 
                         break;
                     case 1:
                         // TODO: Help
