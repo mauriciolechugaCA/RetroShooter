@@ -36,6 +36,8 @@ namespace RetroShooter.Managers
             _lastSpawnTime = 0f;
         }
 
+        public List<Powerup> Powerups => _powerups;
+
         public void Update(GameTime gameTime, Player player)
         {
             // Spawn power-ups at intervals
@@ -72,11 +74,11 @@ namespace RetroShooter.Managers
             Powerup powerup;
             if (_random.Next(2) == 0)
             {
-                powerup = new PowerupHealth(position);
+                powerup = new PowerupHealth(position, _powerupHealthTexture);
             }
             else
             {
-                powerup = new PowerupLaser(position);
+                powerup = new PowerupLaser(position, _powerupLaserTexture);
             }
             _powerups.Add(powerup);
         }

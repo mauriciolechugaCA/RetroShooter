@@ -23,6 +23,8 @@ namespace RetroShooter.Entities.Enemies
 
         public bool IsAlive => health > 0;
 
+        public Rectangle Bounds => new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+
         protected Enemy(Vector2 startPosition, int health, float speed, int damage, Texture2D texture)
         {
             this.position = startPosition;

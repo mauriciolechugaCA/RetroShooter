@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using RetroShooter.Entities;
 using RetroShooter.Entities.Enemies;
 using RetroShooter.Entities.Projectiles;
+using RetroShooter.Entities.Powerups;
 using RetroShooter.Managers;
 using System.Collections.Generic;
 
@@ -20,6 +21,7 @@ namespace RetroShooter.Scenes
         private InputManager _inputManager;
         private EnemyManager _enemyManager;
         private PowerupManager _powerupManager;
+        private CollisionManager _collisionManager;
         private Texture2D _enemyTexture;
         private Texture2D _powerupHealthTexture;
         private Texture2D _powerupLaserTexture;
@@ -38,6 +40,7 @@ namespace RetroShooter.Scenes
             _powerupHealthTexture = powerupHealthTexture;
             _powerupLaserTexture = powerupLaserTexture;
             _powerupManager = new PowerupManager(_powerupHealthTexture, _powerupLaserTexture);
+            _collisionManager = new CollisionManager(_player, _projectiles, _enemyManager.Enemies, _powerupManager.Powerups);
         }
 
         public override void Update(GameTime gameTime)
@@ -63,6 +66,8 @@ namespace RetroShooter.Scenes
             }
 
             _powerupManager.Update(gameTime, _player);
+
+            _collisionManager.Update();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

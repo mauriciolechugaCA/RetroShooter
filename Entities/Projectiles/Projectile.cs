@@ -20,6 +20,9 @@ namespace RetroShooter.Entities.Projectiles
         public float Speed { get; set; }
         public int Damage { get; set; }
         private Texture2D texture;
+        public bool IsAlive { get; set; } = true;
+
+        public Rectangle Bounds => new Rectangle((int)Position.X, (int)Position.Y, texture.Width, texture.Height);
 
         public Projectile(Vector2 position, Vector2 direction, float speed, int damage, Texture2D texture)
         {

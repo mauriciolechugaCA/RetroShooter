@@ -24,9 +24,8 @@ namespace RetroShooter.Entities
         public Vector2 Position { get; set; }
         public int Health { get; set; }
         public int Score { get; set; }
-        public bool HasShield { get; set; }
         public bool IsPowerLaserActive { get; set; }
-        public bool IsAlive;
+        public bool IsAlive { get; set; } = true;
 
         // Texture related properties
         private Texture2D texture;
@@ -45,7 +44,6 @@ namespace RetroShooter.Entities
         // Events
         public event Action<int> OnHealthChanged;
         public event Action<int> OnScoreChanged;
-        public event Action OnShieldStatusChanged;
         public event Action OnPowerLaserStatusChanged;
         public event Action OnProjectileFired;
 
@@ -67,7 +65,6 @@ namespace RetroShooter.Entities
             shootCooldown = DEFAULT_SHOOT_COOLDOWN;
             lastShotTime = 0f;
             Score = 0;
-            HasShield = false;
             IsPowerLaserActive = false;
             IsAlive = true;
         }
@@ -77,13 +74,9 @@ namespace RetroShooter.Entities
             if (!IsAlive) return;
 
             Color tint = Color.White;
-            if (HasShield)
+            if (IsPowerLaserActive)
             {
-                tint = Color.LightBlue;
-            }
-            else if (IsPowerLaserActive)
-            {
-                tint = Color.Yellow;
+                tint = Color.Red;
             }
 
             spriteBatch.Draw(
@@ -176,13 +169,6 @@ namespace RetroShooter.Entities
 
         public void TakeDamage(int damage)
         {
-            if (HasShield)
-            {
-                HasShield = false;
-                OnShieldStatusChanged?.Invoke();
-                return;
-            }
-
             int previousHealth = Health;
             Health = Math.Max(0, Health - damage);
 

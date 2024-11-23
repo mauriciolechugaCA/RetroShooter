@@ -29,6 +29,7 @@ namespace RetroShooter.Managers
             this.enemyBulletTexture = enemyBulletTexture;
             enemies = new List<Enemy>();
         }
+        public List<Enemy> Enemies => enemies;
 
         public void SpawnEnemy(Vector2 position, string enemyType)
         {
