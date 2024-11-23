@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RetroShooter.Entities.Projectiles;
 
 /*
  * Handles enemy spawning, behavior updates, and interactions with the player.
@@ -22,12 +23,18 @@ namespace RetroShooter.Managers
         private List<Enemy> enemies;
         private Texture2D enemyTexture;
         private Texture2D enemyBulletTexture;
+        private float spawnTimer;
+        private float spawnInterval;
+        private List<Projectile> projectiles;
 
-        public EnemyManager(Texture2D enemyTexture, Texture2D enemyBulletTexture)
+        public EnemyManager(Texture2D enemyTexture, Texture2D enemyBulletTexture, List<Projectile> projectiles)
         {
             this.enemyTexture = enemyTexture;
             this.enemyBulletTexture = enemyBulletTexture;
+            this.projectiles = projectiles;
             enemies = new List<Enemy>();
+            spawnInterval = 5.0f; // Cooldown between enemy spawns in seconds
+            spawnTimer = 0f;
         }
         public List<Enemy> Enemies => enemies;
 
@@ -39,7 +46,7 @@ namespace RetroShooter.Managers
                     enemies.Add(new EnemyBasic(position, enemyTexture));
                     break;
                 case "Shooter":
-                    enemies.Add(new EnemyShooter(position, enemyBulletTexture));
+                    enemies.Add(new EnemyShooter(position, enemyTexture, enemyBulletTexture, projectiles));
                     break;
                 default:
                     throw new ArgumentException("Unknown enemy type");
@@ -48,6 +55,16 @@ namespace RetroShooter.Managers
 
         public void Update(GameTime gameTime, Player player)
         {
+            spawnTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (spawnTimer >= spawnInterval)
+            {
+                Random random = new Random();
+                float xPosition = (float)random.NextDouble() * 768; 
+                SpawnEnemy(new Vector2(xPosition, 0), "Shooter"); // Change enemy type here for testing
+                spawnTimer = 0f;
+            }
+
             foreach (var enemy in enemies)
             {
                 enemy.Update(gameTime, player);

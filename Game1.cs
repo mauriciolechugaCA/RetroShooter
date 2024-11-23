@@ -33,6 +33,7 @@ namespace RetroShooter
         public Texture2D laserNormalTexture;
         public Texture2D enemyBulletTexture; 
         public Texture2D enemyTexture;
+        public Texture2D enemyShooterTexture;
         public Texture2D powerupHealthTexture;
         public Texture2D powerupLaserTexture;
 
@@ -96,6 +97,8 @@ namespace RetroShooter
             laserNormalTexture = Content.Load<Texture2D>("images/player/laserNormal");
             enemyBulletTexture = Content.Load<Texture2D>("images/enemies/laserEnemy");
             enemyTexture = Content.Load<Texture2D>("images/enemies/enemyShip1");
+            enemyShooterTexture = Content.Load<Texture2D>("images/enemies/enemyShip3");
+
 
             // Load powerup textures
             powerupHealthTexture = Content.Load<Texture2D>("images/powerups/powerupHealth");

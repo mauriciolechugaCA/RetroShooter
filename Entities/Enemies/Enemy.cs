@@ -21,7 +21,17 @@ namespace RetroShooter.Entities.Enemies
         protected int damage;
         protected Texture2D texture;
 
-        public bool IsAlive => health > 0;
+        public bool IsAlive
+        {
+            get => health > 0;
+            set
+            {
+                if (!value)
+                {
+                    health = 0;
+                }
+            }
+        }
 
         public Rectangle Bounds => new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
 
@@ -36,10 +46,9 @@ namespace RetroShooter.Entities.Enemies
 
         public abstract void Move(Player player);
 
-        public void Update(GameTime gameTime, Player player)
+        public virtual void Update(GameTime gameTime, Player player)
         {
             Move(player);
-            // Additional update logic (e.g., shooting, collision detection)
         }
 
         public void Draw(SpriteBatch spriteBatch)

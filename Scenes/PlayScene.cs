@@ -39,7 +39,7 @@ namespace RetroShooter.Scenes
             _projectiles = new List<Projectile>();
             _inputManager = new InputManager();
             _enemyTexture = enemyTexture;
-            _enemyManager = new EnemyManager(_enemyTexture, enemyBulletTexture);
+            _enemyManager = new EnemyManager(_enemyTexture, enemyBulletTexture, _projectiles);
             _powerupHealthTexture = powerupHealthTexture;
             _powerupLaserTexture = powerupLaserTexture;
             _powerupManager = new PowerupManager(_powerupHealthTexture, _powerupLaserTexture);
