@@ -372,6 +372,12 @@
 /processorParam:TextureFormat=Color
 /build:images/world/meteorGrey_small2.png
 
+#begin sounds/background_music.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/background_music.wav
+
 #begin sounds/confirmation_001.ogg
 /importer:OggImporter
 /processor:SongProcessor
