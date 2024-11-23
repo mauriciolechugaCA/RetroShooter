@@ -36,6 +36,10 @@ namespace RetroShooter
         public Texture2D powerupHealthTexture;
         public Texture2D powerupLaserTexture;
 
+        // Background and floating meteors
+        public Texture2D backgroundTexture;
+        public Texture2D[] floatingMeteorsTextures;
+
         // Scene management
         private GameScene _currentScene;
         private StartScene _startScene;
@@ -97,13 +101,30 @@ namespace RetroShooter
             powerupHealthTexture = Content.Load<Texture2D>("images/powerups/powerupHealth");
             powerupLaserTexture = Content.Load<Texture2D>("images/powerups/powerupLaser");
 
+            // Load background and floating meteors
+            backgroundTexture = Content.Load<Texture2D>("images/world/background");
+            floatingMeteorsTextures = new Texture2D[]
+            {
+                Content.Load<Texture2D>("images/world/meteorBrown_big1"),
+                Content.Load<Texture2D>("images/world/meteorBrown_big3"),
+                Content.Load<Texture2D>("images/world/meteorBrown_med1"),
+                Content.Load<Texture2D>("images/world/meteorBrown_med3"),
+                Content.Load<Texture2D>("images/world/meteorBrown_tiny1"),
+                Content.Load<Texture2D>("images/world/meteorBrown_tiny2"),
+                Content.Load<Texture2D>("images/world/meteorGrey_big2"),
+                Content.Load<Texture2D>("images/world/meteorGrey_big4"),
+                Content.Load<Texture2D>("images/world/meteorGrey_med2"),
+                Content.Load<Texture2D>("images/world/meteorGrey_small1"),
+                Content.Load<Texture2D>("images/world/meteorGrey_small2")
+            };
+
             // Initialize player
             PlayerManager = new PlayerManager(new Vector2(400, 600), 4, playerTexture, 1.0f);
 
             // Initialize scenes
             _startScene = new StartScene(_spriteBatch, _font, _menuItems, _menuTitle, this, PlayerManager.Player);
-            _playScene = new PlayScene(_spriteBatch, _hudFont, PlayerManager.Player, laserNormalTexture, enemyBulletTexture, enemyTexture, powerupHealthTexture, powerupLaserTexture);
-            _helpScene = new HelpScene(_spriteBatch, _font);
+            _playScene = new PlayScene(_spriteBatch, _hudFont, PlayerManager.Player, laserNormalTexture, enemyBulletTexture, enemyTexture, powerupHealthTexture, powerupLaserTexture, this);
+            _helpScene = new HelpScene(_spriteBatch, _font, this);
             _aboutScene = new AboutScene(_spriteBatch, _creditsTitleFont, _menuItems, _menuTitle, this);
 
             // Set initial scene

@@ -16,6 +16,7 @@ namespace RetroShooter.Scenes
         private List<string> _aboutText;
         private Game1 _game;
         private InputManager _inputManager;
+        private BackgroundManager _backgroundManager;
 
         public AboutScene(SpriteBatch spriteBatch, SpriteFont creditsTitleFont, SpriteFont menuItemsfont, SpriteFont menuTitlefont, Game1 game)
         {
@@ -37,11 +38,15 @@ namespace RetroShooter.Scenes
                 "Enter to return..."
             };
             _inputManager = new InputManager();
+            _backgroundManager = new BackgroundManager(_game.backgroundTexture, _game.floatingMeteorsTextures, 1000, 1500, _spriteBatch);
         }
 
         public override void Update(GameTime gameTime)
         {
             _inputManager.Update();
+
+            // Update background and floating meteors
+            _backgroundManager.Update(gameTime);
 
             if (_inputManager.IsKeyPressed(Keys.Enter) || _inputManager.IsKeyPressed(Keys.Escape))
             {
@@ -53,6 +58,9 @@ namespace RetroShooter.Scenes
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
+
+            // Draw background and floating meteors
+            _backgroundManager.Draw(spriteBatch);
 
             for (int i = 0; i < _aboutText.Count; i++)
             {

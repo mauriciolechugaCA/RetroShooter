@@ -22,8 +22,9 @@ namespace RetroShooter.Scenes
         private Game1 _game;
         private InputManager _inputManager;
         private Player _player; 
+        private BackgroundManager _backgroundManager;
 
-        public StartScene(SpriteBatch spriteBatch, SpriteFont font, SpriteFont menuItemsfont, SpriteFont menuTitlefont, Game game, Player player) 
+        public StartScene(SpriteBatch spriteBatch, SpriteFont font, SpriteFont menuItemsfont, SpriteFont menuTitlefont, Game1 game, Player player) 
         {
             _spriteBatch = spriteBatch;
             _font = font;
@@ -31,14 +32,18 @@ namespace RetroShooter.Scenes
             _menuTitlefont = menuTitlefont;
             _menuItems = new List<string> { "Play", "Help", "About", "Exit" };
             _selectedMenuItem = 0;
-            _game = (Game1)game;
+            _game = game;
             _inputManager = new InputManager();
-            _player = player; 
+            _player = player;
+            _backgroundManager = new BackgroundManager(_game.backgroundTexture, _game.floatingMeteorsTextures, 1000, 1500, _spriteBatch);
         }
 
         public override void Update(GameTime gameTime)
         {
             _inputManager.Update();
+
+            // Update background and floating meteors
+            _backgroundManager.Update(gameTime);
 
             if (_inputManager.IsKeyPressed(Keys.Up) || _inputManager.IsKeyPressed(Keys.W))
             {
@@ -61,10 +66,10 @@ namespace RetroShooter.Scenes
                 switch (_selectedMenuItem)
                 {
                     case 0:
-                        SceneManager.ChangeScene(new PlayScene(_spriteBatch, _font, _game.PlayerManager.Player, _game.laserNormalTexture, _game.enemyBulletTexture, _game.enemyTexture, _game.powerupHealthTexture, _game.powerupLaserTexture)); 
+                        SceneManager.ChangeScene(new PlayScene(_spriteBatch, _font, _game.PlayerManager.Player, _game.laserNormalTexture, _game.enemyBulletTexture, _game.enemyTexture, _game.powerupHealthTexture, _game.powerupLaserTexture, _game)); 
                         break;
                     case 1:
-                        SceneManager.ChangeScene(new HelpScene(_spriteBatch, _font));
+                        SceneManager.ChangeScene(new HelpScene(_spriteBatch, _font, _game));
                         break;
                     case 2:
                         // TODO: AboutScene
@@ -81,6 +86,9 @@ namespace RetroShooter.Scenes
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             _spriteBatch.Begin();
+
+            // Draw background and floating meteors
+            _backgroundManager.Draw(_spriteBatch);
 
             // Draw the title
             string title = "Retro Shooter";

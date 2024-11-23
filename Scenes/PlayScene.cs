@@ -7,6 +7,7 @@ using RetroShooter.Entities.Projectiles;
 using RetroShooter.Entities.Powerups;
 using RetroShooter.Managers;
 using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace RetroShooter.Scenes
 {
@@ -15,6 +16,7 @@ namespace RetroShooter.Scenes
         private SpriteBatch _spriteBatch;
         private SpriteFont _hudFont;
         private Player _player;
+        private Game1 _game;
         private Texture2D _laserNormalTexture;
         private Texture2D _enemyBulletTexture;
         private List<Projectile> _projectiles;
@@ -25,8 +27,9 @@ namespace RetroShooter.Scenes
         private Texture2D _enemyTexture;
         private Texture2D _powerupHealthTexture;
         private Texture2D _powerupLaserTexture;
+        private BackgroundManager _backgroundManager;
 
-        public PlayScene(SpriteBatch spriteBatch, SpriteFont hudFont, Player player, Texture2D laserNormalTexture, Texture2D enemyBulletTexture, Texture2D enemyTexture, Texture2D powerupHealthTexture, Texture2D powerupLaserTexture)
+        public PlayScene(SpriteBatch spriteBatch, SpriteFont hudFont, Player player, Texture2D laserNormalTexture, Texture2D enemyBulletTexture, Texture2D enemyTexture, Texture2D powerupHealthTexture, Texture2D powerupLaserTexture, Game1 game)
         {
             _spriteBatch = spriteBatch;
             _hudFont = hudFont;
@@ -41,12 +44,17 @@ namespace RetroShooter.Scenes
             _powerupLaserTexture = powerupLaserTexture;
             _powerupManager = new PowerupManager(_powerupHealthTexture, _powerupLaserTexture);
             _collisionManager = new CollisionManager(_player, _projectiles, _enemyManager.Enemies, _powerupManager.Powerups);
+            _game = game;
+            _backgroundManager = new BackgroundManager(_game.backgroundTexture, _game.floatingMeteorsTextures, 1000, 1500, _spriteBatch);
         }
 
         public override void Update(GameTime gameTime)
         {
             _inputManager.Update();
             _player.Update(_inputManager, 768, 1024, _projectiles, gameTime, _laserNormalTexture);
+
+            // Update background and floating meteors
+            _backgroundManager.Update(gameTime);
 
             // Update projectiles
             foreach (var projectile in _projectiles)
@@ -73,6 +81,9 @@ namespace RetroShooter.Scenes
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             _spriteBatch.Begin();
+
+            // Draw background and floating meteors
+            _backgroundManager.Draw(_spriteBatch);
 
             // Draw player
             _player.Draw(_spriteBatch);
