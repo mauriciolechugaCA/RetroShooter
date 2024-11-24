@@ -162,7 +162,8 @@ namespace RetroShooter.Entities
                 PROJECTILE_DIRECTION_UP,
                 10f,
                 IsPowerLaserActive ? DEFAULT_POWER_LASER_DAMAGE : DEFAULT_NORMAL_DAMAGE,
-                laserNormalTexture
+                laserNormalTexture,
+                ProjectileOwner.Player
             );
             projectiles.Add(projectile);
         }

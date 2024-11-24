@@ -59,7 +59,8 @@ namespace RetroShooter.Entities.Enemies
                     direction, 
                     8f, // Speed of the projectile
                     1, // Damage of the projectile
-                    projectileTexture
+                    projectileTexture,
+                    ProjectileOwner.Enemy
                 );
 
                 projectiles.Add(projectile);

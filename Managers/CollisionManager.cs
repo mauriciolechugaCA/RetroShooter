@@ -38,6 +38,8 @@ namespace RetroShooter.Managers
             CheckPlayerProjectileCollisions();
             CheckPlayerPowerupCollisions();
             CheckProjectileEnemyCollisions();
+
+            _projectiles.RemoveAll(p => !p.IsAlive);
         }
 
         private void CheckPlayerEnemyCollisions()
@@ -55,9 +57,9 @@ namespace RetroShooter.Managers
         {
             foreach (var projectile in _projectiles)
             {
-                if (projectile.Bounds.Intersects(_player.Bounds))
+                if (projectile.Owner == ProjectileOwner.Enemy && projectile.Bounds.Intersects(_player.Bounds))
                 {
-                    _player.TakeDamage(1);
+                    _player.TakeDamage(projectile.Damage);
                     projectile.IsAlive = false; // Mark projectile for removal
                 }
             }
@@ -81,7 +83,7 @@ namespace RetroShooter.Managers
             {
                 foreach (var enemy in _enemies)
                 {
-                    if (projectile.Bounds.Intersects(enemy.Bounds))
+                    if (projectile.Owner == ProjectileOwner.Player && projectile.Bounds.Intersects(enemy.Bounds))
                     {
                         enemy.TakeDamage(projectile.Damage);
                         projectile.IsAlive = false; // Mark projectile for removal

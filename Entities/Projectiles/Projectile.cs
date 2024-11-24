@@ -13,6 +13,12 @@ using Microsoft.Xna.Framework.Input;
 
 namespace RetroShooter.Entities.Projectiles
 {
+    public enum ProjectileOwner
+    {
+        Player,
+        Enemy
+    }
+
     public class Projectile
     {
         public Vector2 Position { get; set; }
@@ -21,16 +27,18 @@ namespace RetroShooter.Entities.Projectiles
         public int Damage { get; set; }
         private Texture2D texture;
         public bool IsAlive { get; set; } = true;
+        public ProjectileOwner Owner { get; set; }
 
         public Rectangle Bounds => new Rectangle((int)Position.X, (int)Position.Y, texture.Width, texture.Height);
 
-        public Projectile(Vector2 position, Vector2 direction, float speed, int damage, Texture2D texture)
+        public Projectile(Vector2 position, Vector2 direction, float speed, int damage, Texture2D texture, ProjectileOwner owner)
         {
             Position = position;
             Direction = direction;
             Speed = speed;
             Damage = damage;
             this.texture = texture;
+            Owner = owner;
         }
 
         public void Update()
