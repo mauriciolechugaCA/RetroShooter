@@ -86,7 +86,7 @@ namespace RetroShooter.Managers
                 {
                     if (projectile.Owner == ProjectileOwner.Player && projectile.Bounds.Intersects(enemy.Bounds))
                     {
-                        enemy.TakeDamage(projectile.Damage);
+                        enemy.TakeDamage(projectile.Damage, _player);
                         projectile.IsAlive = false; // Mark projectile for removal
                     }
                 }

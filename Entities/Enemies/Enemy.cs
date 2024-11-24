@@ -58,9 +58,17 @@ namespace RetroShooter.Entities.Enemies
             spriteBatch.Draw(texture, position, Color.White);
         }
 
-        public void TakeDamage(int amount)
+        public void TakeDamage(int amount, Player player)
         {
             health -= amount;
+
+            if (health <= 0)
+            {
+                IsAlive = false;
+                player.AddScore(GetPoints());
+            }
         }
+
+        public abstract int GetPoints();
     }
 }

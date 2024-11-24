@@ -14,7 +14,7 @@ namespace RetroShooter.Entities
     public class Player
     {
         // Constants
-        private const float DEFAULT_SPEED = 6f;
+        private const float DEFAULT_SPEED = 8f;
         private const float DEFAULT_SHOOT_COOLDOWN = 0.3f;
         private const float PROJECTILE_OFFSET_Y = -65f;
         private const int DEFAULT_POWER_LASER_DAMAGE = 20;

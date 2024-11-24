@@ -46,5 +46,10 @@ namespace RetroShooter.Entities.Enemies
             randomDirection.Normalize();
             return randomDirection;
         }
+
+        public override int GetPoints()
+        {
+            return 15;
+        }
     }
 }

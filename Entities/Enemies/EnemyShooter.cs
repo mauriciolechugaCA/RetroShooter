@@ -83,5 +83,10 @@ namespace RetroShooter.Entities.Enemies
             base.Update(gameTime, player);
             Shoot(gameTime, player);
         }
+
+        public override int GetPoints()
+        {
+            return 30;
+        }
     }
 }

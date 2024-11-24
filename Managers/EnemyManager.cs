@@ -37,7 +37,7 @@ namespace RetroShooter.Managers
             this.projectiles = projectiles;
             enemies = new List<Enemy>();
             basicEnemySpawnInterval = 10.0f;
-            shooterEnemySpawnInterval = 20.0f;
+            shooterEnemySpawnInterval = 25.0f;
             basicEnemySpawnTimer = 0f;
             shooterEnemySpawnTimer = 0f;
         }
@@ -104,27 +104,27 @@ namespace RetroShooter.Managers
             if (totalMinutes < 1)
             {
                 basicEnemySpawnInterval = 10.0f;
-                shooterEnemySpawnInterval = 20.0f;
+                shooterEnemySpawnInterval = 25.0f;
             }
             else if (totalMinutes < 2)
             {
                 basicEnemySpawnInterval = 8.0f;
-                shooterEnemySpawnInterval = 16.0f;
+                shooterEnemySpawnInterval = 20.0f;
             }
             else if (totalMinutes < 3)
             {
                 basicEnemySpawnInterval = 6.0f;
-                shooterEnemySpawnInterval = 12.0f;
+                shooterEnemySpawnInterval = 15.0f;
             }
             else if (totalMinutes < 4)
             {
                 basicEnemySpawnInterval = 4.0f;
-                shooterEnemySpawnInterval = 2.0f;
+                shooterEnemySpawnInterval = 10.0f;
             }
             else
             {
                 basicEnemySpawnInterval = 2.0f;
-                shooterEnemySpawnInterval = 4.0f;
+                shooterEnemySpawnInterval = 5.0f;
             }
         }
     }
