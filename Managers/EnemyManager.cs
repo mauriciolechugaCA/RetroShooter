@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RetroShooter.Entities.Projectiles;
+using System.Diagnostics;
 
 /*
  * Handles enemy spawning, behavior updates, and interactions with the player.
@@ -23,8 +24,10 @@ namespace RetroShooter.Managers
         private List<Enemy> enemies;
         private Texture2D enemyTexture;
         private Texture2D enemyBulletTexture;
-        private float spawnTimer;
-        private float spawnInterval;
+        private float basicEnemySpawnTimer;
+        private float shooterEnemySpawnTimer;
+        private float basicEnemySpawnInterval;
+        private float shooterEnemySpawnInterval;
         private List<Projectile> projectiles;
 
         public EnemyManager(Texture2D enemyTexture, Texture2D enemyBulletTexture, List<Projectile> projectiles)
@@ -33,8 +36,10 @@ namespace RetroShooter.Managers
             this.enemyBulletTexture = enemyBulletTexture;
             this.projectiles = projectiles;
             enemies = new List<Enemy>();
-            spawnInterval = 5.0f; // Cooldown between enemy spawns in seconds
-            spawnTimer = 0f;
+            basicEnemySpawnInterval = 10.0f;
+            shooterEnemySpawnInterval = 20.0f;
+            basicEnemySpawnTimer = 0f;
+            shooterEnemySpawnTimer = 0f;
         }
         public List<Enemy> Enemies => enemies;
 
@@ -55,14 +60,26 @@ namespace RetroShooter.Managers
 
         public void Update(GameTime gameTime, Player player)
         {
-            spawnTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            AdjustSpawnInterval(gameTime.TotalGameTime.TotalSeconds); // Adjusts spawn rate based on game time
+            basicEnemySpawnTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            shooterEnemySpawnTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (spawnTimer >= spawnInterval)
+            if (basicEnemySpawnTimer >= basicEnemySpawnInterval)
             {
                 Random random = new Random();
-                float xPosition = (float)random.NextDouble() * (768 - enemyTexture.Width); 
-                SpawnEnemy(new Vector2(xPosition, 0), "Basic"); // Change enemy type here for testing
-                spawnTimer = 0f;
+                float xPosition = (float)random.NextDouble() * (768 - enemyTexture.Width);
+                SpawnEnemy(new Vector2(xPosition, 0), "Basic");
+                basicEnemySpawnTimer = 0f;
+                Debug.WriteLine("Basic enemy spawned");
+            }
+
+            if (shooterEnemySpawnTimer >= shooterEnemySpawnInterval)
+            {
+                Random random = new Random();
+                float xPosition = (float)random.NextDouble() * (768 - enemyTexture.Width);
+                SpawnEnemy(new Vector2(xPosition, 0), "Shooter");
+                shooterEnemySpawnTimer = 0f;
+                Debug.WriteLine("Shooter enemy spawned");
             }
 
             foreach (var enemy in enemies)
@@ -79,6 +96,35 @@ namespace RetroShooter.Managers
             foreach (var enemy in enemies)
             {
                 enemy.Draw(spriteBatch);
+            }
+        }
+
+        private void AdjustSpawnInterval(double totalMinutes)
+        {
+            if (totalMinutes < 1)
+            {
+                basicEnemySpawnInterval = 10.0f;
+                shooterEnemySpawnInterval = 20.0f;
+            }
+            else if (totalMinutes < 2)
+            {
+                basicEnemySpawnInterval = 8.0f;
+                shooterEnemySpawnInterval = 16.0f;
+            }
+            else if (totalMinutes < 3)
+            {
+                basicEnemySpawnInterval = 6.0f;
+                shooterEnemySpawnInterval = 12.0f;
+            }
+            else if (totalMinutes < 4)
+            {
+                basicEnemySpawnInterval = 4.0f;
+                shooterEnemySpawnInterval = 2.0f;
+            }
+            else
+            {
+                basicEnemySpawnInterval = 2.0f;
+                shooterEnemySpawnInterval = 4.0f;
             }
         }
     }

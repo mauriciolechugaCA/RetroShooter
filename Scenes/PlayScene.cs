@@ -68,11 +68,6 @@ namespace RetroShooter.Scenes
             // Update enemies
             _enemyManager.Update(gameTime, _player);
 
-            if (gameTime.TotalGameTime.TotalSeconds % 5 == 0) // Spawn an enemy every 5 seconds
-            {
-                _enemyManager.SpawnEnemy(new Vector2(100, 100), "Basic");
-            }
-
             _powerupManager.Update(gameTime, _player);
 
             _collisionManager.Update();

@@ -26,7 +26,7 @@ namespace RetroShooter.Entities.Enemies
         {
             this.projectileTexture = projectileTexture;
             this.projectiles = projectiles;
-            shootCooldown = 3.0f; // Cooldown between shots
+            shootCooldown = 5.0f; // Cooldown between shots
             lastShottime = 0;
             random = new Random();
             direction = GetRandomDownwardDirection();
@@ -57,7 +57,7 @@ namespace RetroShooter.Entities.Enemies
                 var projectile = new Projectile(
                     position, 
                     direction, 
-                    8f, // Speed of the projectile
+                    10f, // Speed of the projectile
                     10, // Damage of the projectile
                     projectileTexture,
                     ProjectileOwner.Enemy
