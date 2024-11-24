@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RetroShooter.Managers
 {
-    internal class SceneManager
+    public static class SceneManager
     {
         private static Stack<Scene> _scenes = new Stack<Scene>();
         private static Game1 _game;
@@ -40,6 +40,19 @@ namespace RetroShooter.Managers
                 var currentScene = _scenes.Peek();
                 currentScene.Draw(gameTime, spriteBatch);
             }
+        }
+
+        public static void PopScene()
+        {
+            if (_scenes.Count > 0)
+            {
+                _scenes.Pop();
+            }
+        }
+
+        public static Scene GetCurrentScene()
+        {
+            return _scenes.Count > 0 ? _scenes.Peek() : null;
         }
     }
 

@@ -21,11 +21,11 @@ namespace RetroShooter
         private SpriteBatch _spriteBatch;
 
         // Fonts
-        private SpriteFont _font;
-        private SpriteFont _hudFont;
-        private SpriteFont _creditsTitleFont;
-        private SpriteFont _menuTitle;
-        private SpriteFont _menuItems;
+        public SpriteFont _font;
+        public SpriteFont _hudFont;
+        public SpriteFont _creditsTitleFont;
+        public SpriteFont _menuTitle;
+        public SpriteFont _menuItems;
 
         // Game objects
         public PlayerManager PlayerManager { get; private set; }
@@ -70,6 +70,7 @@ namespace RetroShooter
                 this,
                 PlayerManager.Player
             ));
+            SceneManager.ChangeScene(_startScene);
 
             // Set the window size
             _graphics.PreferredBackBufferWidth = 768;
@@ -136,13 +137,6 @@ namespace RetroShooter
 
         protected override void Update(GameTime gameTime)
         {
-            // Exit game if escape is pressed
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-                Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
-                Exit();
-            }
-
             // Update current scene
             SceneManager.Update(gameTime);
 

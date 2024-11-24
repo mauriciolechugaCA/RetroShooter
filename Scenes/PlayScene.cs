@@ -51,6 +51,12 @@ namespace RetroShooter.Scenes
         public override void Update(GameTime gameTime)
         {
             _inputManager.Update();
+            if (_inputManager.IsKeyPressed(Keys.Escape))
+            {
+                SceneManager.ChangeScene(new PauseScene(_spriteBatch, _game._menuTitle, _game._menuItems, _game));
+                return;
+            }
+
             _player.Update(_inputManager, 768, 1024, _projectiles, gameTime, _laserNormalTexture);
 
             // Update background and floating meteors
