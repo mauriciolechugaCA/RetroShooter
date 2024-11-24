@@ -59,7 +59,7 @@ namespace RetroShooter
         {
             base.Initialize();
 
-            PlayerManager = new PlayerManager(new Vector2(400, 800), 4, playerTexture, 1.0f);
+            PlayerManager = new PlayerManager(new Vector2(400, 800), 100, playerTexture, 1.0f);
 
             // Initialize first scene
             SceneManager.ChangeScene(new StartScene(

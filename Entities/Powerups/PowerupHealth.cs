@@ -16,7 +16,7 @@ namespace RetroShooter.Entities.Powerups
 
         public override void ApplyEffect(Player player)
         {
-            player.SetHealth(player.Health + 1);
+            player.SetHealth(player.Health + 30);
         }
     }
 }

@@ -13,11 +13,12 @@ namespace RetroShooter.Entities
     public class Player
     {
         // Constants
-        private const float DEFAULT_SPEED = 5f;
-        private const float DEFAULT_SHOOT_COOLDOWN = 0.2f;
+        private const float DEFAULT_SPEED = 6f;
+        private const float DEFAULT_SHOOT_COOLDOWN = 0.3f;
         private const float PROJECTILE_OFFSET_Y = -65f;
-        private const int DEFAULT_POWER_LASER_DAMAGE = 2;
-        private const int DEFAULT_NORMAL_DAMAGE = 1;
+        private const int DEFAULT_POWER_LASER_DAMAGE = 20;
+        private const int DEFAULT_NORMAL_DAMAGE = 10;
+        private const int MAX_HEALTH = 100;
         private static readonly Vector2 PROJECTILE_DIRECTION_UP = new Vector2(0f, -1f);
 
         // Properties
@@ -190,7 +191,7 @@ namespace RetroShooter.Entities
             switch (powerUp)
             {
                 case PowerupHealth:
-                    SetHealth(Health + 1);
+                    SetHealth(Health + 30);
                     break;
                 case PowerupLaser:
                     SetIsPowerLaserActive(true);
@@ -204,7 +205,7 @@ namespace RetroShooter.Entities
         {
             if (Health != health)
             {
-                Health = health;
+                Health = Math.Min(health, MAX_HEALTH);
                 OnHealthChanged?.Invoke(Health);
             }
         }

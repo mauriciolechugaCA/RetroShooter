@@ -22,7 +22,7 @@ namespace RetroShooter.Entities.Enemies
         private Vector2 direction;
         private Random random;
 
-        public EnemyShooter(Vector2 startPosition, Texture2D texture, Texture2D projectileTexture, List<Projectile> projectiles) : base(startPosition, 100, 1.5f, 50, texture)
+        public EnemyShooter(Vector2 startPosition, Texture2D texture, Texture2D projectileTexture, List<Projectile> projectiles) : base(startPosition, 40, 1.5f, 25, texture)
         {
             this.projectileTexture = projectileTexture;
             this.projectiles = projectiles;
@@ -58,7 +58,7 @@ namespace RetroShooter.Entities.Enemies
                     position, 
                     direction, 
                     8f, // Speed of the projectile
-                    1, // Damage of the projectile
+                    10, // Damage of the projectile
                     projectileTexture,
                     ProjectileOwner.Enemy
                 );

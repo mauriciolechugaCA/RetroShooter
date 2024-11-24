@@ -60,7 +60,7 @@ namespace RetroShooter.Managers
             if (spawnTimer >= spawnInterval)
             {
                 Random random = new Random();
-                float xPosition = (float)random.NextDouble() * 768; 
+                float xPosition = (float)random.NextDouble() * (768 - enemyTexture.Width); 
                 SpawnEnemy(new Vector2(xPosition, 0), "Shooter"); // Change enemy type here for testing
                 spawnTimer = 0f;
             }
