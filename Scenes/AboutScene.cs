@@ -62,6 +62,8 @@ namespace RetroShooter.Scenes
             // Draw background and floating meteors
             _backgroundManager.Draw(spriteBatch);
 
+            var shadowOffset = new Vector2(4, 4);
+
             for (int i = 0; i < _aboutText.Count; i++)
             {
                 var text = _aboutText[i];
@@ -70,8 +72,8 @@ namespace RetroShooter.Scenes
                     (_game.GraphicsDevice.Viewport.Width - textSize.X) / 2,
                     225 + i * 50
                 );
-
-                spriteBatch.DrawString(_creditsTitleFont, text, position, Color.White);
+                spriteBatch.DrawString(_creditsTitleFont, text, position + shadowOffset, Color.Black);
+                spriteBatch.DrawString(_creditsTitleFont, text, position, Color.LightGray);
             }
 
             spriteBatch.End();

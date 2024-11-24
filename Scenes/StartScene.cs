@@ -94,8 +94,10 @@ namespace RetroShooter.Scenes
             string title = "Retro Shooter";
             var titleSize = _menuTitlefont.MeasureString(title);
             var titlePosition = new Vector2((_game.GraphicsDevice.Viewport.Width - titleSize.X) / 2, 175);
+            var shadowOffset = new Vector2(4, 4);
 
-            _spriteBatch.DrawString(_menuTitlefont, title, titlePosition, Color.White);
+            _spriteBatch.DrawString(_menuTitlefont, title, titlePosition + shadowOffset, Color.Black);
+            _spriteBatch.DrawString(_menuTitlefont, title, titlePosition, Color.LightGray);
 
             // Draw the menu items
             for (int i = 0; i < _menuItems.Count; i++)
@@ -103,7 +105,8 @@ namespace RetroShooter.Scenes
                 var text = _menuItems[i];
                 var textSize = _menuItemsfont.MeasureString(text);
                 var textPosition = new Vector2((_game.GraphicsDevice.Viewport.Width - textSize.X) / 2, 275 + i * 100);
-                var color = (i == _selectedMenuItem) ? Color.Yellow : Color.White;
+                var color = (i == _selectedMenuItem) ? Color.IndianRed : Color.LightGray;
+                _spriteBatch.DrawString(_menuItemsfont, text, textPosition + shadowOffset, Color.Black);
                 _spriteBatch.DrawString(_menuItemsfont, text, textPosition, color);
             }
 
