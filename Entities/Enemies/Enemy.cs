@@ -20,7 +20,7 @@ namespace RetroShooter.Entities.Enemies
         protected float speed;
         protected int damage;
         protected Texture2D texture;
-
+        public int CollisionDamage { get; set; }
         public bool IsAlive
         {
             get => health > 0;
@@ -35,13 +35,15 @@ namespace RetroShooter.Entities.Enemies
 
         public Rectangle Bounds => new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
 
-        protected Enemy(Vector2 startPosition, int health, float speed, int damage, Texture2D texture)
+        protected Enemy(Vector2 startPosition, int health, float speed, int damage, Texture2D texture, int collisionDamage)
         {
             this.position = startPosition;
             this.health = health;
             this.speed = speed;
             this.damage = damage;
             this.texture = texture;
+            IsAlive = true;
+            CollisionDamage = collisionDamage;
         }
 
         public abstract void Move(Player player);

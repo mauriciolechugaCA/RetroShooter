@@ -48,7 +48,8 @@ namespace RetroShooter.Managers
             {
                 if (_player.Bounds.Intersects(enemy.Bounds))
                 {
-                    _player.TakeDamage(1);
+                    _player.TakeDamage(enemy.CollisionDamage);
+                    enemy.IsAlive = false;
                 }
             }
         }

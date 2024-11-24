@@ -22,11 +22,11 @@ namespace RetroShooter.Entities.Enemies
         private Vector2 direction;
         private Random random;
 
-        public EnemyShooter(Vector2 startPosition, Texture2D texture, Texture2D projectileTexture, List<Projectile> projectiles) : base(startPosition, 40, 1.5f, 25, texture)
+        public EnemyShooter(Vector2 startPosition, Texture2D texture, Texture2D projectileTexture, List<Projectile> projectiles) : base(startPosition, 40, 1.5f, 25, texture, 25)
         {
             this.projectileTexture = projectileTexture;
             this.projectiles = projectiles;
-            shootCooldown = 2.0f; // Cooldown between shots
+            shootCooldown = 3.0f; // Cooldown between shots
             lastShottime = 0;
             random = new Random();
             direction = GetRandomDownwardDirection();

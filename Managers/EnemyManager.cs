@@ -61,7 +61,7 @@ namespace RetroShooter.Managers
             {
                 Random random = new Random();
                 float xPosition = (float)random.NextDouble() * (768 - enemyTexture.Width); 
-                SpawnEnemy(new Vector2(xPosition, 0), "Shooter"); // Change enemy type here for testing
+                SpawnEnemy(new Vector2(xPosition, 0), "Basic"); // Change enemy type here for testing
                 spawnTimer = 0f;
             }
 

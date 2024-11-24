@@ -17,7 +17,7 @@ namespace RetroShooter.Entities.Enemies
         private Vector2 direction;
         private Random random;
 
-        public EnemyBasic(Vector2 startPosition, Texture2D texture) : base(startPosition, 20, 5.0f, 15, texture)
+        public EnemyBasic(Vector2 startPosition, Texture2D texture) : base(startPosition, 20, 5.0f, 15, texture, 15)
         {
             random = new Random();
             direction = GetRandomDownwardDirection();
