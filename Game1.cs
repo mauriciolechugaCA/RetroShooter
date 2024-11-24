@@ -13,12 +13,13 @@ namespace RetroShooter
         Play,
         Help,
         About,
+        GameOver
     }
 
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        public SpriteBatch _spriteBatch;
 
         // Fonts
         public SpriteFont _font;
@@ -47,6 +48,7 @@ namespace RetroShooter
         private PlayScene _playScene;
         private HelpScene _helpScene;
         private AboutScene _aboutScene;
+        private GameOverScene _gameOverScene;
 
         public Game1()
         {
@@ -59,7 +61,7 @@ namespace RetroShooter
         {
             base.Initialize();
 
-            PlayerManager = new PlayerManager(new Vector2(400, 800), 100, playerTexture, 1.0f);
+            PlayerManager = new PlayerManager(new Vector2(400, 800), 100, playerTexture, 1.0f, this);
 
             // Initialize first scene
             SceneManager.ChangeScene(new StartScene(
@@ -123,13 +125,14 @@ namespace RetroShooter
             };
 
             // Initialize player
-            PlayerManager = new PlayerManager(new Vector2(400, 600), 4, playerTexture, 1.0f);
+            PlayerManager = new PlayerManager(new Vector2(400, 600), 4, playerTexture, 1.0f, this);
 
             // Initialize scenes
             _startScene = new StartScene(_spriteBatch, _font, _menuItems, _menuTitle, this, PlayerManager.Player);
             _playScene = new PlayScene(_spriteBatch, _hudFont, PlayerManager.Player, laserNormalTexture, enemyBulletTexture, enemyTexture, powerupHealthTexture, powerupLaserTexture, this);
             _helpScene = new HelpScene(_spriteBatch, _font, this);
             _aboutScene = new AboutScene(_spriteBatch, _creditsTitleFont, _menuItems, _menuTitle, this);
+            _gameOverScene = new GameOverScene(_spriteBatch, _menuItems, _menuTitle, this);
 
             // Set initial scene
             SceneManager.ChangeScene(_startScene);
@@ -170,6 +173,9 @@ namespace RetroShooter
                     break;
                 case GameScene.About:
                     SceneManager.ChangeScene(_aboutScene);
+                    break;
+                case GameScene.GameOver:
+                    SceneManager.ChangeScene(_gameOverScene);
                     break;
             }
         }

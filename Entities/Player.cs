@@ -7,6 +7,7 @@ using RetroShooter.Managers;
 using System;
 using System.Collections.Generic;
 using RetroShooter.Entities;
+using RetroShooter.Scenes;
 
 namespace RetroShooter.Entities
 {
@@ -53,8 +54,9 @@ namespace RetroShooter.Entities
         private float shootCooldown;
         private float lastShotTime;
         private Vector2 dimensions;
+        private Game1 _game;
 
-        public Player(Vector2 startPosition, int health, Texture2D playerTexture, float scale)
+        public Player(Vector2 startPosition, int health, Texture2D playerTexture, float scale, Game1 game)
         {
             Position = startPosition;
             Health = health;
@@ -68,6 +70,7 @@ namespace RetroShooter.Entities
             Score = 0;
             IsPowerLaserActive = false;
             IsAlive = true;
+            _game = game;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -177,6 +180,12 @@ namespace RetroShooter.Entities
             if (previousHealth != Health)
             {
                 OnHealthChanged?.Invoke(Health);
+            }
+
+            if  (Health == 0)
+            {
+                IsAlive = false;
+                SceneManager.ChangeScene(new GameOverScene(_game._spriteBatch, _game._menuTitle, _game._menuItems, _game));
             }
         }
 

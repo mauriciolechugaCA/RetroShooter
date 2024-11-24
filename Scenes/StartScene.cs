@@ -76,7 +76,6 @@ namespace RetroShooter.Scenes
                         SceneManager.ChangeScene(new AboutScene(_spriteBatch, _font, _menuItemsfont, _menuTitlefont, _game));
                         break;
                     case 3:
-                        // Exit
                         _game.Exit();
                         break;
                 }
