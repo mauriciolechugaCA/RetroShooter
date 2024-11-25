@@ -27,13 +27,12 @@ namespace RetroShooter.Scenes
             _game = game;
             _aboutText = new List<string>
             {
-                "Retro Shooter v1.0",
-                " ",
                 "Developed by",
                 "Mauricio Lechuga",
                 " ",
                 "Assets provided by",
                 "www.kenney.nl",
+                "Pixabay",
                 " ",
                 "Enter to return..."
             };
@@ -62,7 +61,15 @@ namespace RetroShooter.Scenes
             // Draw background and floating meteors
             _backgroundManager.Draw(spriteBatch);
 
+            string title = "Retro Shooter v1.0";
+            var titleSize = _menuTitlefont.MeasureString(title);
+            var titlePosition = new Vector2((_game.GraphicsDevice.Viewport.Width - titleSize.X) / 2, 175);
+
             var shadowOffset = new Vector2(4, 4);
+
+            _spriteBatch.DrawString(_menuTitlefont, title, titlePosition + shadowOffset, Color.Black);
+            _spriteBatch.DrawString(_menuTitlefont, title, titlePosition, Color.LightSeaGreen);
+
 
             for (int i = 0; i < _aboutText.Count; i++)
             {
@@ -70,7 +77,7 @@ namespace RetroShooter.Scenes
                 var textSize = _creditsTitleFont.MeasureString(text);
                 var position = new Vector2(
                     (_game.GraphicsDevice.Viewport.Width - textSize.X) / 2,
-                    225 + i * 50
+                    300 + i * 50
                 );
                 spriteBatch.DrawString(_creditsTitleFont, text, position + shadowOffset, Color.Black);
                 spriteBatch.DrawString(_creditsTitleFont, text, position, Color.LightGray);

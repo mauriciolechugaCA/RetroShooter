@@ -105,6 +105,7 @@ namespace RetroShooter.Scenes
             // Draw HUD
             string healthText = $"Health: {_player.Health}";
             string scoreText = $"Score: {_player.Score}";
+            var shadowOffset = new Vector2(4, 4);
 
             // Calculate positions to align text in the corners
             Vector2 healthTextPosition = new Vector2(30, 15);
@@ -112,8 +113,10 @@ namespace RetroShooter.Scenes
             Vector2 scoreTextPosition = new Vector2(_spriteBatch.GraphicsDevice.Viewport.Width - scoreSize.X - 30, 15);
 
             // Draw texts
-            _spriteBatch.DrawString(_hudFont, healthText, healthTextPosition, Color.White);
-            _spriteBatch.DrawString(_hudFont, scoreText, scoreTextPosition, Color.White);
+            _spriteBatch.DrawString(_hudFont, healthText, healthTextPosition + shadowOffset, Color.Black);
+            _spriteBatch.DrawString(_hudFont, healthText, healthTextPosition, Color.LightGray);
+            _spriteBatch.DrawString(_hudFont, scoreText, scoreTextPosition + shadowOffset, Color.Black);
+            _spriteBatch.DrawString(_hudFont, scoreText, scoreTextPosition, Color.LightGray);
 
             _spriteBatch.End();
         }

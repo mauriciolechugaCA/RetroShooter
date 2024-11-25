@@ -81,7 +81,7 @@ namespace RetroShooter.Scenes
             var shadowOffset = new Vector2(4, 4);
 
             spriteBatch.DrawString(_menuTitlefont, pauseText, pauseTextPosition + shadowOffset, Color.Black);
-            spriteBatch.DrawString(_menuTitlefont, pauseText, pauseTextPosition, Color.LightGray);
+            spriteBatch.DrawString(_menuTitlefont, pauseText, pauseTextPosition, Color.LightSeaGreen);
 
             for (int i = 0; i < _menuItems.Length; i++)
             {
@@ -89,7 +89,7 @@ namespace RetroShooter.Scenes
                 Vector2 textSize = _menuItemsfont.MeasureString(_menuItems[i]);
                 Vector2 position = new Vector2(
                     (_game.GraphicsDevice.Viewport.Width - textSize.X) / 2,
-                    275 + i * 100
+                    300 + i * 125
                 );
 
                 spriteBatch.DrawString(_menuItemsfont, _menuItems[i], position + shadowOffset, Color.Black);

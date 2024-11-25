@@ -226,7 +226,7 @@ namespace RetroShooter.Entities
             {
                 IsPowerLaserActive = isPowerLaserActive;
                 OnPowerLaserStatusChanged?.Invoke();
-                Debug.WriteLine($"Power laser is now {(IsPowerLaserActive ? "active" : "inactive")}");
+                //Debug.WriteLine($"Power laser is now {(IsPowerLaserActive ? "active" : "inactive")}");
             }
         }
 
