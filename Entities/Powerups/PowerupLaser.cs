@@ -12,11 +12,17 @@ namespace RetroShooter.Entities.Powerups
 {
     internal class PowerupLaser : Powerup
     {
-        public PowerupLaser(Vector2 position, Texture2D texture) : base(position, texture) { }
+        public float SpawnTime { get; set; }
 
-        public override void ApplyEffect(Player player)
+        public PowerupLaser(Vector2 position, Texture2D texture, float spawnTime) : base(position, texture)
+        {
+            SpawnTime = spawnTime;
+        }
+
+        public override void ApplyEffect(Player player, GameTime gameTime)
         {
             player.SetIsPowerLaserActive(true);
+            player.SetLaserEffectStartTime((float)gameTime.TotalGameTime.TotalSeconds);
         }
     }
 }

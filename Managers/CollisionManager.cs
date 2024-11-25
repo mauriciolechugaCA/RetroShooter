@@ -32,14 +32,15 @@ namespace RetroShooter.Managers
             _powerups = powerups;
         }
 
-        public void Update()
+        public void Update(GameTime gameTime)
         {
             CheckPlayerEnemyCollisions();
             CheckPlayerProjectileCollisions();
-            CheckPlayerPowerupCollisions();
+            CheckPlayerPowerupCollisions(gameTime);
             CheckProjectileEnemyCollisions();
 
             _projectiles.RemoveAll(p => !p.IsAlive);
+            _powerups.RemoveAll(p => !p.IsAlive);
         }
 
         private void CheckPlayerEnemyCollisions()
@@ -66,13 +67,13 @@ namespace RetroShooter.Managers
             }
         }
 
-        private void CheckPlayerPowerupCollisions()
+        private void CheckPlayerPowerupCollisions(GameTime gameTime)
         {
             foreach (var powerup in _powerups)
             {
                 if (_player.Bounds.Intersects(powerup.Bounds))
                 {
-                    powerup.ApplyEffect(_player);
+                    powerup.ApplyEffect(_player, gameTime);
                     powerup.IsAlive = false; // Mark powerup for removal
                 }
             }

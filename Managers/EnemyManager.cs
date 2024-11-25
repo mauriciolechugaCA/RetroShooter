@@ -70,7 +70,7 @@ namespace RetroShooter.Managers
                 float xPosition = (float)random.NextDouble() * (768 - enemyTexture.Width);
                 SpawnEnemy(new Vector2(xPosition, 0), "Basic");
                 basicEnemySpawnTimer = 0f;
-                Debug.WriteLine("Basic enemy spawned");
+                //Debug.WriteLine("Basic enemy spawned");
             }
 
             if (shooterEnemySpawnTimer >= shooterEnemySpawnInterval)
@@ -79,7 +79,7 @@ namespace RetroShooter.Managers
                 float xPosition = (float)random.NextDouble() * (768 - enemyTexture.Width);
                 SpawnEnemy(new Vector2(xPosition, 0), "Shooter");
                 shooterEnemySpawnTimer = 0f;
-                Debug.WriteLine("Shooter enemy spawned");
+                //Debug.WriteLine("Shooter enemy spawned");
             }
 
             foreach (var enemy in enemies)

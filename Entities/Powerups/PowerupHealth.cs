@@ -19,7 +19,7 @@ namespace RetroShooter.Entities.Powerups
             SpawnTime = spawnTime;
         }
 
-        public override void ApplyEffect(Player player)
+        public override void ApplyEffect(Player player, GameTime gameTime)
         {
             player.SetHealth(player.Health + 30);
         }

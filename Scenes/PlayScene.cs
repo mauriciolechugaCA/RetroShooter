@@ -76,7 +76,7 @@ namespace RetroShooter.Scenes
 
             _powerupManager.Update(gameTime, _player);
 
-            _collisionManager.Update();
+            _collisionManager.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

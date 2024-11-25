@@ -24,6 +24,6 @@ namespace RetroShooter.Entities.Powerups
             Position = position;
             this.texture = texture;
         }
-        public abstract void ApplyEffect(Player player);
+        public abstract void ApplyEffect(Player player, GameTime gameTime);
     }
 }

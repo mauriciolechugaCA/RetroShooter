@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using RetroShooter.Entities;
 using RetroShooter.Scenes;
+using System.Diagnostics;
 
 namespace RetroShooter.Entities
 {
@@ -20,6 +21,7 @@ namespace RetroShooter.Entities
         private const int DEFAULT_POWER_LASER_DAMAGE = 20;
         private const int DEFAULT_NORMAL_DAMAGE = 10;
         private const int MAX_HEALTH = 100;
+        private const float LASER_EFFECT_DURATION = 10f;
         private static readonly Vector2 PROJECTILE_DIRECTION_UP = new Vector2(0f, -1f);
 
         // Properties
@@ -53,6 +55,7 @@ namespace RetroShooter.Entities
         private float speed;
         private float shootCooldown;
         private float lastShotTime;
+        private float laserEffectStartTime;
         private Vector2 dimensions;
         private Game1 _game;
 
@@ -77,11 +80,7 @@ namespace RetroShooter.Entities
         {
             if (!IsAlive) return;
 
-            Color tint = Color.White;
-            if (IsPowerLaserActive)
-            {
-                tint = Color.Red;
-            }
+            Color tint = IsPowerLaserActive ? Color.IndianRed : Color.White;
 
             spriteBatch.Draw(
                 texture,
@@ -134,6 +133,7 @@ namespace RetroShooter.Entities
 
         private void ClampPositionToScreen(int screenWidth, int screenHeight)
         {
+            // ## AI assisted ##
             Position = new Vector2(
                 Math.Clamp(Position.X, dimensions.X / 2, screenWidth - dimensions.X / 2),
                 Math.Clamp(Position.Y, dimensions.Y / 2, screenHeight - dimensions.Y / 2)
@@ -195,7 +195,7 @@ namespace RetroShooter.Entities
             OnScoreChanged?.Invoke(Score);
         }
 
-        public void ApplyEffect(Powerup powerUp)
+        public void ApplyEffect(Powerup powerUp, GameTime gameTime)
         {
             switch (powerUp)
             {
@@ -204,6 +204,7 @@ namespace RetroShooter.Entities
                     break;
                 case PowerupLaser:
                     SetIsPowerLaserActive(true);
+                    laserEffectStartTime = (float)gameTime.TotalGameTime.TotalSeconds;
                     break;
                 default:
                     throw new ArgumentException("Unknown powerup type");
@@ -225,7 +226,13 @@ namespace RetroShooter.Entities
             {
                 IsPowerLaserActive = isPowerLaserActive;
                 OnPowerLaserStatusChanged?.Invoke();
+                Debug.WriteLine($"Power laser is now {(IsPowerLaserActive ? "active" : "inactive")}");
             }
+        }
+
+        public void SetLaserEffectStartTime(float startTime)
+        {
+            laserEffectStartTime = startTime;
         }
 
         public void Update(InputManager inputManager, int screenWidth, int screenHeight, List<Projectile> projectiles, GameTime gameTime, Texture2D _laserNormalTexture)
@@ -237,6 +244,11 @@ namespace RetroShooter.Entities
             if (inputManager.IsKeyDown(Keys.Space))
             {
                 Shoot(projectiles, gameTime, PROJECTILE_DIRECTION_UP, _laserNormalTexture);
+            }
+
+            if (IsPowerLaserActive && gameTime.TotalGameTime.TotalSeconds - laserEffectStartTime > LASER_EFFECT_DURATION)
+            {
+                SetIsPowerLaserActive(false);
             }
         }
     }
