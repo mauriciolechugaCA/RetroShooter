@@ -58,6 +58,8 @@ namespace RetroShooter.Entities
         private float laserEffectStartTime;
         private Vector2 dimensions;
         private Game1 _game;
+        private SoundManager _soundManager;
+        public SoundManager SoundManager => _soundManager;
 
         public Player(Vector2 startPosition, int health, Texture2D playerTexture, float scale, Game1 game)
         {
@@ -74,6 +76,7 @@ namespace RetroShooter.Entities
             IsPowerLaserActive = false;
             IsAlive = true;
             _game = game;
+            _soundManager = game.SoundManager;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -147,6 +150,8 @@ namespace RetroShooter.Entities
             CreateProjectile(projectiles, direction, laserNormalTexture);
             lastShotTime = (float)gameTime.TotalGameTime.TotalSeconds;
             OnProjectileFired?.Invoke();
+
+            _soundManager.PlaySoundEffect("playerLaser");
         }
 
         private bool CanShoot(GameTime gameTime)
@@ -176,6 +181,7 @@ namespace RetroShooter.Entities
         {
             int previousHealth = Health;
             Health = Math.Max(0, Health - damage);
+            _soundManager.PlaySoundEffect("player_hit");
 
             if (previousHealth != Health)
             {
@@ -185,7 +191,9 @@ namespace RetroShooter.Entities
             if  (Health == 0)
             {
                 IsAlive = false;
-                SceneManager.ChangeScene(new GameOverScene(_game._spriteBatch, _game._menuTitle, _game._menuItems, _game));
+                _soundManager.PlaySoundEffect("player_death");
+                _soundManager.StopSong();
+                SceneManager.ChangeScene(new GameOverScene(_game._spriteBatch, _game._menuTitle, _game._menuItems, _game, _soundManager));
             }
         }
 

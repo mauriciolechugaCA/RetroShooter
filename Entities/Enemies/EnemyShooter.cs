@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RetroShooter.Entities.Projectiles;
+using RetroShooter.Managers;
 
 /*
  * Represents a challenging enemy that moves slower but shoots homing projectiles towards the player at a higher rate.
@@ -21,8 +22,9 @@ namespace RetroShooter.Entities.Enemies
         private List<Projectile> projectiles;
         private Vector2 direction;
         private Random random;
+        private SoundManager _soundManager;
 
-        public EnemyShooter(Vector2 startPosition, Texture2D texture, Texture2D projectileTexture, List<Projectile> projectiles) : base(startPosition, 40, 1.5f, 25, texture, 25)
+        public EnemyShooter(Vector2 startPosition, Texture2D texture, Texture2D projectileTexture, List<Projectile> projectiles, SoundManager soundManager) : base(startPosition, 40, 1.5f, 25, texture, 25)
         {
             this.projectileTexture = projectileTexture;
             this.projectiles = projectiles;
@@ -30,6 +32,7 @@ namespace RetroShooter.Entities.Enemies
             lastShottime = 0;
             random = new Random();
             direction = GetRandomDownwardDirection();
+            _soundManager = soundManager;
         }
 
         public override void Move(Player player)
@@ -65,6 +68,8 @@ namespace RetroShooter.Entities.Enemies
 
                 projectiles.Add(projectile);
                 lastShottime = (float)gameTime.TotalGameTime.TotalSeconds;
+
+                _soundManager.PlaySoundEffect("enemyLaser");
             }
         }
 

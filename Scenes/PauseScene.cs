@@ -21,8 +21,9 @@ namespace RetroShooter.Scenes
         private string[] _menuItems = { "Continue", "Save", "Main Menu" };
         private int _selectedIndex;
         private BackgroundManager _backgroundManager;
+        private SoundManager _soundManager;
 
-        public PauseScene(SpriteBatch spriteBatch, SpriteFont menuTitlefont, SpriteFont menuItemsfont, Game1 game)
+        public PauseScene(SpriteBatch spriteBatch, SpriteFont menuTitlefont, SpriteFont menuItemsfont, Game1 game, SoundManager soundManager)
         {
             _spriteBatch = spriteBatch;
             _menuTitlefont = menuTitlefont;
@@ -31,7 +32,7 @@ namespace RetroShooter.Scenes
             _inputManager = new InputManager();
             _selectedIndex = 0;
             _backgroundManager = new BackgroundManager(_game.backgroundTexture, _game.floatingMeteorsTextures, 1000, 1500, _spriteBatch);
-
+            _soundManager = new SoundManager();
         }
 
         public override void Update(GameTime gameTime)
@@ -41,15 +42,24 @@ namespace RetroShooter.Scenes
             if (_inputManager.IsKeyPressed(Keys.Up))
             {
                 _selectedIndex--;
-                if (_selectedIndex < 0) _selectedIndex = _menuItems.Length - 1;
+                if (_selectedIndex < 0)
+                {
+                    _selectedIndex = _menuItems.Length - 1;
+                }
+                _soundManager.PlaySoundEffect("select_002"); // Sound effect for menu selection
             }
             else if (_inputManager.IsKeyPressed(Keys.Down))
             {
                 _selectedIndex++;
-                if (_selectedIndex >= _menuItems.Length) _selectedIndex = 0;
+                if (_selectedIndex >= _menuItems.Length)
+                {
+                    _selectedIndex = 0;
+                }
+                _soundManager.PlaySoundEffect("select_002"); // Sound effect for menu selection
             }
             else if (_inputManager.IsKeyPressed(Keys.Enter))
             {
+                _soundManager.PlaySoundEffect("confirmation_001"); // Sound effect for menu selection confirmation
                 switch (_selectedIndex)
                 {
                     case 0: // Continue

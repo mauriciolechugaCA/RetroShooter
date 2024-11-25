@@ -23,6 +23,7 @@ namespace RetroShooter.Entities.Powerups
         {
             player.SetIsPowerLaserActive(true);
             player.SetLaserEffectStartTime((float)gameTime.TotalGameTime.TotalSeconds);
+            player.SoundManager.PlaySoundEffect("powerup");
         }
     }
 }

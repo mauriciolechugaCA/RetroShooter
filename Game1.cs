@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Input;
 using RetroShooter.Scenes;
 using RetroShooter.Entities;
 using RetroShooter.Managers;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace RetroShooter
 {
@@ -49,6 +51,11 @@ namespace RetroShooter
         private HelpScene _helpScene;
         private AboutScene _aboutScene;
         private GameOverScene _gameOverScene;
+        private PauseScene _pauseScene;
+
+        // Sound manager
+        private SoundManager _soundManager;
+        public SoundManager SoundManager => _soundManager;
 
         public Game1()
         {
@@ -61,7 +68,7 @@ namespace RetroShooter
         {
             base.Initialize();
 
-            PlayerManager = new PlayerManager(new Vector2(400, 800), 100, playerTexture, 1.0f, this);
+            PlayerManager = new PlayerManager(new Vector2(400, 850), 100, playerTexture, 1.0f, this);
 
             // Initialize first scene
             SceneManager.ChangeScene(new StartScene(
@@ -70,7 +77,8 @@ namespace RetroShooter
                 _menuItems,
                 _menuTitle,
                 this,
-                PlayerManager.Player
+                PlayerManager.Player,
+                _soundManager
             ));
             SceneManager.ChangeScene(_startScene);
 
@@ -87,6 +95,7 @@ namespace RetroShooter
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _soundManager = new SoundManager();
 
             // Load fonts
             _font = Content.Load<SpriteFont>("fonts/gameFont");
@@ -99,8 +108,8 @@ namespace RetroShooter
             playerTexture = Content.Load<Texture2D>("images/player/playerShip");
             laserNormalTexture = Content.Load<Texture2D>("images/player/laserNormal");
             enemyBulletTexture = Content.Load<Texture2D>("images/enemies/laserEnemy");
-            enemyTexture = Content.Load<Texture2D>("images/enemies/enemyShip1");
-            enemyShooterTexture = Content.Load<Texture2D>("images/enemies/enemyShip3");
+            enemyTexture = Content.Load<Texture2D>("images/enemies/enemyShip2");
+            enemyShooterTexture = Content.Load<Texture2D>("images/enemies/enemyShip5");
 
 
             // Load powerup textures
@@ -124,15 +133,30 @@ namespace RetroShooter
                 Content.Load<Texture2D>("images/world/meteorGrey_small2")
             };
 
+            // Load sounds
+            _soundManager.LoadSoundEffect("confirmation_001", Content.Load<SoundEffect>("sounds/confirmation_001")); // ##AI Assisted debugging## 
+            _soundManager.LoadSoundEffect("select_002", Content.Load<SoundEffect>("sounds/select_002"));
+            _soundManager.LoadSoundEffect("player_hit", Content.Load<SoundEffect>("sounds/impactMetal_000"));
+            _soundManager.LoadSoundEffect("player_death", Content.Load<SoundEffect>("sounds/explosionCrunch_001"));
+            _soundManager.LoadSoundEffect("powerup", Content.Load<SoundEffect>("sounds/powerUp2"));
+            _soundManager.LoadSoundEffect("playerLaser", Content.Load<SoundEffect>("sounds/sfx_laser1"));
+            _soundManager.LoadSoundEffect("enemyLaser", Content.Load<SoundEffect>("sounds/sfx_laser2"));
+
+            // Load music
+            _soundManager.LoadSong("background_music", Content.Load<Song>("sounds/background_music"));
+            _soundManager.LoadSong("gameplay_music", Content.Load<Song>("sounds/gameplay_music"));
+
             // Initialize player
-            PlayerManager = new PlayerManager(new Vector2(400, 600), 4, playerTexture, 1.0f, this);
+            PlayerManager = new PlayerManager(new Vector2(400, 850), 100, playerTexture, 1.0f, this);
 
             // Initialize scenes
-            _startScene = new StartScene(_spriteBatch, _font, _menuItems, _menuTitle, this, PlayerManager.Player);
-            _playScene = new PlayScene(_spriteBatch, _hudFont, PlayerManager.Player, laserNormalTexture, enemyBulletTexture, enemyTexture, powerupHealthTexture, powerupLaserTexture, this);
-            _helpScene = new HelpScene(_spriteBatch, _font, _menuTitle, _menuItems, this);
-            _aboutScene = new AboutScene(_spriteBatch, _creditsTitleFont, _menuItems, _menuTitle, this);
-            _gameOverScene = new GameOverScene(_spriteBatch, _menuItems, _menuTitle, this);
+            _startScene = new StartScene(_spriteBatch, _font, _menuItems, _menuTitle, this, PlayerManager.Player, _soundManager);
+            _playScene = new PlayScene(_spriteBatch, _hudFont, PlayerManager.Player, laserNormalTexture, enemyBulletTexture, enemyTexture, powerupHealthTexture, powerupLaserTexture, this, _soundManager);
+            _helpScene = new HelpScene(_spriteBatch, _font, _menuTitle, _menuItems, this, _soundManager);
+            _aboutScene = new AboutScene(_spriteBatch, _creditsTitleFont, _menuItems, _menuTitle, this, _soundManager);
+            _gameOverScene = new GameOverScene(_spriteBatch, _menuItems, _menuTitle, this, SoundManager);
+            _pauseScene = new PauseScene(_spriteBatch, _menuTitle, _menuItems, this, _soundManager);
+
 
             // Set initial scene
             SceneManager.ChangeScene(_startScene);
@@ -142,7 +166,6 @@ namespace RetroShooter
         {
             // Update current scene
             SceneManager.Update(gameTime);
-
             base.Update(gameTime);
         }
 
@@ -152,7 +175,6 @@ namespace RetroShooter
 
             // Draw current scene
             SceneManager.Draw(gameTime, _spriteBatch);
-
             base.Draw(gameTime);
         }
 

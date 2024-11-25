@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using RetroShooter.Entities;
 using RetroShooter.Managers;
 
@@ -23,8 +24,9 @@ namespace RetroShooter.Scenes
         private InputManager _inputManager;
         private Player _player; 
         private BackgroundManager _backgroundManager;
+        private SoundManager _soundManager;
 
-        public StartScene(SpriteBatch spriteBatch, SpriteFont font, SpriteFont menuItemsfont, SpriteFont menuTitlefont, Game1 game, Player player) 
+        public StartScene(SpriteBatch spriteBatch, SpriteFont font, SpriteFont menuItemsfont, SpriteFont menuTitlefont, Game1 game, Player player, SoundManager soundManager) 
         {
             _spriteBatch = spriteBatch;
             _font = font;
@@ -36,11 +38,19 @@ namespace RetroShooter.Scenes
             _inputManager = new InputManager();
             _player = player;
             _backgroundManager = new BackgroundManager(_game.backgroundTexture, _game.floatingMeteorsTextures, 1000, 1500, _spriteBatch);
+            _soundManager = soundManager;
+
+            _soundManager.PlaySong("background_music");
         }
 
         public override void Update(GameTime gameTime)
         {
             _inputManager.Update();
+
+            if(MediaPlayer.State != MediaState.Playing)
+            {
+                _soundManager.PlaySong("background_music");
+            }
 
             // Update background and floating meteors
             _backgroundManager.Update(gameTime);
@@ -52,6 +62,7 @@ namespace RetroShooter.Scenes
                 {
                     _selectedMenuItem = _menuItems.Count - 1;
                 }
+                _soundManager.PlaySoundEffect("select_002"); // Sound effect for menu selection
             }
             else if (_inputManager.IsKeyPressed(Keys.Down) || _inputManager.IsKeyPressed(Keys.S))
             {
@@ -60,20 +71,21 @@ namespace RetroShooter.Scenes
                 {
                     _selectedMenuItem = 0;
                 }
+                _soundManager.PlaySoundEffect("select_002"); // Sound effect for menu selection
             }
             else if (_inputManager.IsKeyPressed(Keys.Enter) || _inputManager.IsKeyPressed(Keys.Space))
             {
+                _soundManager.PlaySoundEffect("confirmation_001"); // Sound effect for menu selection confirmation
                 switch (_selectedMenuItem)
                 {
                     case 0:
-                        SceneManager.ChangeScene(new PlayScene(_spriteBatch, _font, _game.PlayerManager.Player, _game.laserNormalTexture, _game.enemyBulletTexture, _game.enemyTexture, _game.powerupHealthTexture, _game.powerupLaserTexture, _game)); 
+                        SceneManager.ChangeScene(new PlayScene(_spriteBatch, _font, _game.PlayerManager.Player, _game.laserNormalTexture, _game.enemyBulletTexture, _game.enemyTexture, _game.powerupHealthTexture, _game.powerupLaserTexture, _game, _soundManager)); 
                         break;
                     case 1:
-                        SceneManager.ChangeScene(new HelpScene(_spriteBatch, _font, _menuTitlefont, _menuItemsfont, _game));
+                        SceneManager.ChangeScene(new HelpScene(_spriteBatch, _font, _menuTitlefont, _menuItemsfont, _game, _soundManager));
                         break;
                     case 2:
-                        // TODO: AboutScene
-                        SceneManager.ChangeScene(new AboutScene(_spriteBatch, _font, _menuItemsfont, _menuTitlefont, _game));
+                        SceneManager.ChangeScene(new AboutScene(_spriteBatch, _font, _menuItemsfont, _menuTitlefont, _game, _soundManager));
                         break;
                     case 3:
                         _game.Exit();

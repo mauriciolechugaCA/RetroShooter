@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RetroShooter.Managers;
 
+
 namespace RetroShooter.Scenes
 {
     internal class AboutScene : Scene
@@ -17,8 +18,9 @@ namespace RetroShooter.Scenes
         private Game1 _game;
         private InputManager _inputManager;
         private BackgroundManager _backgroundManager;
+        private SoundManager _soundManager;
 
-        public AboutScene(SpriteBatch spriteBatch, SpriteFont creditsTitleFont, SpriteFont menuItemsfont, SpriteFont menuTitlefont, Game1 game)
+        public AboutScene(SpriteBatch spriteBatch, SpriteFont creditsTitleFont, SpriteFont menuItemsfont, SpriteFont menuTitlefont, Game1 game, SoundManager soundManager)
         {
             _spriteBatch = spriteBatch;
             _creditsTitleFont = creditsTitleFont;
@@ -38,6 +40,7 @@ namespace RetroShooter.Scenes
             };
             _inputManager = new InputManager();
             _backgroundManager = new BackgroundManager(_game.backgroundTexture, _game.floatingMeteorsTextures, 1000, 1500, _spriteBatch);
+            _soundManager = soundManager;
         }
 
         public override void Update(GameTime gameTime)
@@ -49,8 +52,15 @@ namespace RetroShooter.Scenes
 
             if (_inputManager.IsKeyPressed(Keys.Enter) || _inputManager.IsKeyPressed(Keys.Escape))
             {
-                // Switches to the StartScene using the SceneManager
-                SceneManager.ChangeScene(new StartScene(_spriteBatch, _creditsTitleFont, _menuItemsfont, _menuTitlefont, _game, _game.PlayerManager.Player));
+                if (_soundManager != null)
+                {
+                    SceneManager.ChangeScene(new StartScene(_spriteBatch, _creditsTitleFont, _menuItemsfont, _menuTitlefont, _game, _game.PlayerManager.Player, _soundManager));
+                    _soundManager.PlaySoundEffect("confirmation_001"); // Sound effect for menu selection confirmation
+                }
+                else
+                {
+                    _soundManager = new SoundManager();
+                }
             }
         }
 

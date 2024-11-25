@@ -8,6 +8,7 @@ using RetroShooter.Entities.Powerups;
 using RetroShooter.Managers;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Microsoft.Xna.Framework.Media;
 
 namespace RetroShooter.Scenes
 {
@@ -28,8 +29,9 @@ namespace RetroShooter.Scenes
         private Texture2D _powerupHealthTexture;
         private Texture2D _powerupLaserTexture;
         private BackgroundManager _backgroundManager;
+        private SoundManager _soundManager;
 
-        public PlayScene(SpriteBatch spriteBatch, SpriteFont hudFont, Player player, Texture2D laserNormalTexture, Texture2D enemyBulletTexture, Texture2D enemyTexture, Texture2D powerupHealthTexture, Texture2D powerupLaserTexture, Game1 game)
+        public PlayScene(SpriteBatch spriteBatch, SpriteFont hudFont, Player player, Texture2D laserNormalTexture, Texture2D enemyBulletTexture, Texture2D enemyTexture, Texture2D powerupHealthTexture, Texture2D powerupLaserTexture, Game1 game, SoundManager soundManager)
         {
             _spriteBatch = spriteBatch;
             _hudFont = hudFont;
@@ -39,21 +41,31 @@ namespace RetroShooter.Scenes
             _projectiles = new List<Projectile>();
             _inputManager = new InputManager();
             _enemyTexture = enemyTexture;
-            _enemyManager = new EnemyManager(_enemyTexture, enemyBulletTexture, _projectiles);
+            _enemyManager = new EnemyManager(_enemyTexture, enemyBulletTexture, _projectiles, soundManager);
             _powerupHealthTexture = powerupHealthTexture;
             _powerupLaserTexture = powerupLaserTexture;
             _powerupManager = new PowerupManager(_powerupHealthTexture, _powerupLaserTexture);
             _collisionManager = new CollisionManager(_player, _projectiles, _enemyManager.Enemies, _powerupManager.Powerups);
             _game = game;
             _backgroundManager = new BackgroundManager(_game.backgroundTexture, _game.floatingMeteorsTextures, 1000, 1500, _spriteBatch);
+            _soundManager = soundManager;
+
+            _soundManager.PlaySong("gameplay_music");
         }
 
         public override void Update(GameTime gameTime)
         {
             _inputManager.Update();
+
+            if (MediaPlayer.State != MediaState.Playing)
+            {
+                _soundManager.PlaySong("gameplay_music");
+            }
+
+
             if (_inputManager.IsKeyPressed(Keys.Escape))
             {
-                SceneManager.ChangeScene(new PauseScene(_spriteBatch, _game._menuTitle, _game._menuItems, _game));
+                SceneManager.ChangeScene(new PauseScene(_spriteBatch, _game._menuTitle, _game._menuItems, _game, _soundManager));
                 return;
             }
 

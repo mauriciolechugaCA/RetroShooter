@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 // Represents a health power-up that resotres one healt point to the player.
 
@@ -22,6 +24,7 @@ namespace RetroShooter.Entities.Powerups
         public override void ApplyEffect(Player player, GameTime gameTime)
         {
             player.SetHealth(player.Health + 30);
+            player.SoundManager.PlaySoundEffect("powerup");
         }
     }
 }

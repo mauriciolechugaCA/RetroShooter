@@ -21,8 +21,9 @@ namespace RetroShooter.Scenes
         private BackgroundManager _backgroundManager;
         private InputManager _inputManager;
         private List<string> _instructions;
+        private SoundManager _soundManager;
 
-        public HelpScene(SpriteBatch spriteBatch, SpriteFont font, SpriteFont menuTitleFont, SpriteFont menuItemsFont, Game1 game)
+        public HelpScene(SpriteBatch spriteBatch, SpriteFont font, SpriteFont menuTitleFont, SpriteFont menuItemsFont, Game1 game, SoundManager soundManager)
         {
             _spriteBatch = spriteBatch;
             _font = font;
@@ -46,6 +47,8 @@ namespace RetroShooter.Scenes
                 " ",
                 "Enter to return..."
             };
+
+            _soundManager = soundManager;
         }
 
         public override void Update(GameTime gameTime)
@@ -57,7 +60,8 @@ namespace RetroShooter.Scenes
 
             if (_inputManager.IsKeyPressed(Keys.Enter) || _inputManager.IsKeyPressed(Keys.Escape))
             {
-                SceneManager.ChangeScene(new StartScene(_spriteBatch, _font, _menuItemsFont, _menuTitleFont, _game, _game.PlayerManager.Player));
+                SceneManager.ChangeScene(new StartScene(_spriteBatch, _font, _menuItemsFont, _menuTitleFont, _game, _game.PlayerManager.Player, _soundManager));
+                _soundManager.PlaySoundEffect("confirmation_001"); // Sound effect for menu selection confirmation
             }
         }
 
