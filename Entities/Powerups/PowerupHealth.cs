@@ -12,7 +12,12 @@ namespace RetroShooter.Entities.Powerups
 {
     internal class PowerupHealth : Powerup
     {
-        public PowerupHealth(Vector2 position, Texture2D texture) : base(position, texture) { }
+        public float SpawnTime { get; set; }
+
+        public PowerupHealth(Vector2 position, Texture2D texture, float spawnTime) : base(position, texture)
+        {
+            SpawnTime = spawnTime;
+        }
 
         public override void ApplyEffect(Player player)
         {

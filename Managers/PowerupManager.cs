@@ -25,8 +25,11 @@ namespace RetroShooter.Managers
         private Texture2D _powerupLaserTexture;
         private float _spawnInterval;
         private float _lastSpawnTime;
+        private int _lastScore;
+        private const int SCORE_THRESHOLD = 500;
+        private const float HEALTH_POWERUP_DURATION = 5f;
 
-        public PowerupManager(Texture2D powerupHealthTexture, Texture2D powerupLaserTexture, float spawnInterval = 10f)
+        public PowerupManager(Texture2D powerupHealthTexture, Texture2D powerupLaserTexture, float spawnInterval = 30f) // Initial interval between spawns
         {
             _powerups = new List<Powerup>();
             _random = new Random();
@@ -34,6 +37,7 @@ namespace RetroShooter.Managers
             _powerupLaserTexture = powerupLaserTexture;
             _spawnInterval = spawnInterval;
             _lastSpawnTime = 0f;
+            _lastScore = 0;
         }
 
         public List<Powerup> Powerups => _powerups;
@@ -41,16 +45,24 @@ namespace RetroShooter.Managers
         public void Update(GameTime gameTime, Player player)
         {
             // Spawn power-ups at intervals
-            if (gameTime.TotalGameTime.TotalSeconds - _lastSpawnTime > _spawnInterval)
+            if ((gameTime.TotalGameTime.TotalSeconds - _lastSpawnTime > _spawnInterval || player.Score - _lastScore >= SCORE_THRESHOLD) && !_powerups.OfType<PowerupHealth>().Any())
             {
-                SpawnPowerup();
+                SpawnPowerup(gameTime);
                 _lastSpawnTime = (float)gameTime.TotalGameTime.TotalSeconds;
+                _lastScore = player.Score;
             }
 
             // Update power-ups and check for collisions with the player
             for (int i = _powerups.Count - 1; i >= 0; i--)
             {
                 var powerup = _powerups[i];
+
+                if (powerup is PowerupHealth healthPowerup && gameTime.TotalGameTime.TotalSeconds - healthPowerup.SpawnTime > HEALTH_POWERUP_DURATION)
+                {
+                    _powerups.RemoveAt(i);
+                    continue;
+                }
+
                 if (player.Bounds.Intersects(new Rectangle((int)powerup.Position.X, (int)powerup.Position.Y, 32, 32)))
                 {
                     powerup.ApplyEffect(player);
@@ -68,18 +80,16 @@ namespace RetroShooter.Managers
             }
         }
 
-        private void SpawnPowerup()
+        private void SpawnPowerup(GameTime gameTime)
         {
-            Vector2 position = new Vector2(_random.Next(0, 768), _random.Next(0, 1024));
-            Powerup powerup;
-            if (_random.Next(2) == 0)
-            {
-                powerup = new PowerupHealth(position, _powerupHealthTexture);
-            }
-            else
-            {
-                powerup = new PowerupLaser(position, _powerupLaserTexture);
-            }
+            // ##AI assisted##
+            // Randomly generate a position for the power-up within the game bounds (excluding the top quarter)
+            Vector2 position = new Vector2(
+                _random.Next(30, 768 - 30),
+                _random.Next(768 / 4, 768 - 30)
+            );
+
+            Powerup powerup = new PowerupHealth(position, _powerupHealthTexture, (float)gameTime.TotalGameTime.TotalSeconds);
             _powerups.Add(powerup);
         }
     }
