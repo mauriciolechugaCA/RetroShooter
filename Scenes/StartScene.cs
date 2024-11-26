@@ -35,7 +35,7 @@ namespace RetroShooter.Scenes
             _font = font;
             _menuItemsfont = menuItemsfont;
             _menuTitlefont = menuTitlefont;
-            _menuItems = new List<string> { "Play", "Help", "About", "Exit" };
+            _menuItems = new List<string> { "Play", "Help", "About", "Load", "Exit" };
             _selectedMenuItem = 0;
             _game = game;
             _inputManager = new InputManager();
@@ -118,6 +118,9 @@ namespace RetroShooter.Scenes
                     SceneManager.ChangeScene(new AboutScene(_spriteBatch, _font, _menuItemsfont, _menuTitlefont, _game, _soundManager));
                     break;
                 case 3:
+                    _game.LoadGame();
+                    break;
+                case 4:
                     _game.Exit();
                     break;
             }

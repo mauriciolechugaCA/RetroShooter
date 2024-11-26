@@ -217,6 +217,32 @@ namespace RetroShooter
         {
             return _currentScene;
         }
+
+        // Method to save the game
+        public void SaveGame()
+        {
+            var saveData = new SaveData
+            {
+                PlayerPosition = PlayerManager.Player.Position,
+                PlayerHealth = PlayerManager.Player.Health,
+                PlayerScore = PlayerManager.Player.Score,
+                CurrentScene = _currentScene
+                // Add other game state data as needed
+            };
+
+            SaveManager.SaveGame(saveData);
+        }
+
+        public void LoadGame()
+        {
+            var saveData = SaveManager.LoadGame();
+            if (saveData == null)
+                return;
+
+            PlayerManager.Player.Position = saveData.PlayerPosition;
+            PlayerManager.Player.Health = saveData.PlayerHealth;
+            PlayerManager.Player.Score = saveData.PlayerScore;
+            ChangeScene(saveData.CurrentScene);
+        }
     }
 }
-

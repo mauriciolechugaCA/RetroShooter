@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
+using Microsoft.Xna.Framework.Media;
 
 namespace RetroShooter.Scenes
 {
@@ -32,14 +33,18 @@ namespace RetroShooter.Scenes
             _inputManager = new InputManager();
             _selectedIndex = 0;
             _backgroundManager = new BackgroundManager(_game.backgroundTexture, _game.floatingMeteorsTextures, 1000, 1500, _spriteBatch);
-            _soundManager = new SoundManager();
+            _soundManager = soundManager;
         }
 
         public override void Update(GameTime gameTime)
         {
             _inputManager.Update();
 
-            if (_inputManager.IsKeyPressed(Keys.Up))
+            // Update background and floating meteors
+            _backgroundManager.Update(gameTime);
+
+
+            if (_inputManager.IsKeyPressed(Keys.Up) || _inputManager.IsKeyPressed(Keys.W))
             {
                 _selectedIndex--;
                 if (_selectedIndex < 0)
@@ -48,7 +53,7 @@ namespace RetroShooter.Scenes
                 }
                 _soundManager.PlaySoundEffect("select_002"); // Sound effect for menu selection
             }
-            else if (_inputManager.IsKeyPressed(Keys.Down))
+            else if (_inputManager.IsKeyPressed(Keys.Down) || _inputManager.IsKeyPressed(Keys.S))
             {
                 _selectedIndex++;
                 if (_selectedIndex >= _menuItems.Length)
@@ -66,9 +71,10 @@ namespace RetroShooter.Scenes
                         SceneManager.PopScene();
                         break;
                     case 1: // Save
-                        // Implement save functionality later
+                        _game.SaveGame();
                         break;
                     case 2: // Main Menu
+                        MediaPlayer.Stop();
                         _game.ChangeScene(GameScene.Start);
                         break;
                 }
