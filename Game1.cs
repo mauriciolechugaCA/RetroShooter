@@ -68,7 +68,11 @@ namespace RetroShooter
         {
             base.Initialize();
 
-            PlayerManager = new PlayerManager(new Vector2(400, 850), 100, playerTexture, 1.0f, this);
+            Texture2D playerDeathTexture = Content.Load<Texture2D>("animations/playerShip_Death/playerDeath");
+            int frameCount = 60;
+            float frameSpeed = 3f; // Adjust the frame speed to match the animation
+
+            PlayerManager = new PlayerManager(new Vector2(400, 850), 100, playerTexture, 1.0f, this, playerDeathTexture, frameCount, frameSpeed);
 
             // Initialize first scene
             SceneManager.ChangeScene(new StartScene(
@@ -146,12 +150,17 @@ namespace RetroShooter
             _soundManager.LoadSong("background_music", Content.Load<Song>("sounds/background_music"));
             _soundManager.LoadSong("gameplay_music", Content.Load<Song>("sounds/gameplay_music"));
 
+            // Load animations
+            Texture2D playerDeathTexture = Content.Load<Texture2D>("animations/playerShip_Death/playerDeath");
+            int frameCount = 60;
+            float frameSpeed = 3f;
+
             // Initialize player
-            PlayerManager = new PlayerManager(new Vector2(400, 850), 100, playerTexture, 1.0f, this);
+            PlayerManager = new PlayerManager(new Vector2(400, 850), 100, playerTexture, 1.0f, this, playerDeathTexture, frameCount, frameSpeed);
 
             // Initialize scenes
             _startScene = new StartScene(_spriteBatch, _font, _menuItems, _menuTitle, this, PlayerManager.Player, _soundManager);
-            _playScene = new PlayScene(_spriteBatch, _hudFont, PlayerManager.Player, laserNormalTexture, enemyBulletTexture, enemyTexture, powerupHealthTexture, powerupLaserTexture, this, _soundManager);
+            _playScene = new PlayScene(_spriteBatch, _hudFont, PlayerManager.Player, laserNormalTexture, enemyBulletTexture, enemyTexture, powerupHealthTexture, powerupLaserTexture, this, _soundManager, playerDeathTexture, frameCount, frameSpeed);
             _helpScene = new HelpScene(_spriteBatch, _font, _menuTitle, _menuItems, this, _soundManager);
             _aboutScene = new AboutScene(_spriteBatch, _creditsTitleFont, _menuItems, _menuTitle, this, _soundManager);
             _gameOverScene = new GameOverScene(_spriteBatch, _menuItems, _menuTitle, this, SoundManager);

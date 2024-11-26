@@ -30,8 +30,11 @@ namespace RetroShooter.Scenes
         private Texture2D _powerupLaserTexture;
         private BackgroundManager _backgroundManager;
         private SoundManager _soundManager;
+        private Texture2D _playerDeathTexture;
+        private int _frameCount;
+        private float _frameSpeed;
 
-        public PlayScene(SpriteBatch spriteBatch, SpriteFont hudFont, Player player, Texture2D laserNormalTexture, Texture2D enemyBulletTexture, Texture2D enemyTexture, Texture2D powerupHealthTexture, Texture2D powerupLaserTexture, Game1 game, SoundManager soundManager)
+        public PlayScene(SpriteBatch spriteBatch, SpriteFont hudFont, Player player, Texture2D laserNormalTexture, Texture2D enemyBulletTexture, Texture2D enemyTexture, Texture2D powerupHealthTexture, Texture2D powerupLaserTexture, Game1 game, SoundManager soundManager, Texture2D playerDeathTexture, int frameCount, float frameSpeed)
         {
             _spriteBatch = spriteBatch;
             _hudFont = hudFont;
@@ -49,6 +52,9 @@ namespace RetroShooter.Scenes
             _game = game;
             _backgroundManager = new BackgroundManager(_game.backgroundTexture, _game.floatingMeteorsTextures, 1000, 1500, _spriteBatch);
             _soundManager = soundManager;
+            _playerDeathTexture = playerDeathTexture;
+            _frameCount = frameCount;
+            _frameSpeed = frameSpeed;
 
             _soundManager.PlaySong("gameplay_music");
         }

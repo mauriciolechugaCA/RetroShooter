@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using RetroShooter.Entities;
 using RetroShooter.Scenes;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace RetroShooter.Entities
 {
@@ -46,7 +47,7 @@ namespace RetroShooter.Entities
         );
 
         // Events
-        public event Action<int> OnHealthChanged;
+        public event Action<int> OnHealthChanged; // ## AI assisted ##
         public event Action<int> OnScoreChanged;
         public event Action OnPowerLaserStatusChanged;
         public event Action OnProjectileFired;
@@ -60,8 +61,10 @@ namespace RetroShooter.Entities
         private Game1 _game;
         private SoundManager _soundManager;
         public SoundManager SoundManager => _soundManager;
+        private AnimationManager _animationManager;
+        private Vector2 _lastPosition;
 
-        public Player(Vector2 startPosition, int health, Texture2D playerTexture, float scale, Game1 game)
+        public Player(Vector2 startPosition, int health, Texture2D playerTexture, float scale, Game1 game, Texture2D playerDeathTexture, int frameCount, float frameSpeed)
         {
             Position = startPosition;
             Health = health;
@@ -77,25 +80,34 @@ namespace RetroShooter.Entities
             IsAlive = true;
             _game = game;
             _soundManager = game.SoundManager;
+            _animationManager = new AnimationManager();
+            _animationManager.AddAnimation("playerDeath", new Animation(playerDeathTexture, frameCount, 0.0333f, false));
+            _lastPosition = startPosition;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (!IsAlive) return;
+            if (IsAlive)
+            {
+                Color tint = IsPowerLaserActive ? Color.IndianRed : Color.White;
 
-            Color tint = IsPowerLaserActive ? Color.IndianRed : Color.White;
-
-            spriteBatch.Draw(
-                texture,
-                Position,
-                null,
-                tint,
-                rotation,
-                origin,
-                scale,
-                SpriteEffects.None,
-                0
-            );
+                spriteBatch.Draw(
+                    texture,
+                    Position,
+                    null,
+                    tint,
+                    rotation,
+                    origin,
+                    scale,
+                    SpriteEffects.None,
+                    0
+                );
+            }
+            else
+            {
+                float deathAnimationScale = 0.3f;
+                _animationManager.Draw(spriteBatch, _lastPosition, deathAnimationScale);
+            }
         }
 
         // This method is used to set the texture of the player
@@ -120,6 +132,7 @@ namespace RetroShooter.Entities
                 direction.Normalize();
                 Position += direction * speed;
                 ClampPositionToScreen(screenWidth, screenHeight);
+                _lastPosition = Position;
             }
         }
 
@@ -188,12 +201,17 @@ namespace RetroShooter.Entities
                 OnHealthChanged?.Invoke(Health);
             }
 
-            if  (Health == 0)
+            if (Health <= 0)
             {
                 IsAlive = false;
                 _soundManager.PlaySoundEffect("player_death");
                 _soundManager.StopSong();
-                SceneManager.ChangeScene(new GameOverScene(_game._spriteBatch, _game._menuTitle, _game._menuItems, _game, _soundManager));
+
+                // Wait for 5 seconds before changing the scene
+                Task.Delay(3000).ContinueWith(_ =>
+                {
+                    SceneManager.ChangeScene(new GameOverScene(_game._spriteBatch, _game._menuTitle, _game._menuItems, _game, _soundManager));
+                });
             }
         }
 
@@ -245,18 +263,24 @@ namespace RetroShooter.Entities
 
         public void Update(InputManager inputManager, int screenWidth, int screenHeight, List<Projectile> projectiles, GameTime gameTime, Texture2D _laserNormalTexture)
         {
-            if (!IsAlive) return;
-
-            Move(inputManager, screenWidth, screenHeight);
-
-            if (inputManager.IsKeyDown(Keys.Space))
+            if (IsAlive)
             {
-                Shoot(projectiles, gameTime, PROJECTILE_DIRECTION_UP, _laserNormalTexture);
+                Move(inputManager, screenWidth, screenHeight);
+
+                if (inputManager.IsKeyDown(Keys.Space))
+                {
+                    Shoot(projectiles, gameTime, PROJECTILE_DIRECTION_UP, _laserNormalTexture);
+                }
+
+                if (IsPowerLaserActive && gameTime.TotalGameTime.TotalSeconds - laserEffectStartTime > LASER_EFFECT_DURATION)
+                {
+                    SetIsPowerLaserActive(false);
+                }
             }
-
-            if (IsPowerLaserActive && gameTime.TotalGameTime.TotalSeconds - laserEffectStartTime > LASER_EFFECT_DURATION)
+            else
             {
-                SetIsPowerLaserActive(false);
+                _animationManager.Play("playerDeath");
+                _animationManager.Update(gameTime);
             }
         }
     }

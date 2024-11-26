@@ -25,6 +25,9 @@ namespace RetroShooter.Scenes
         private Player _player; 
         private BackgroundManager _backgroundManager;
         private SoundManager _soundManager;
+        private Texture2D playerDeathTexture;
+        private int frameCount;
+        private float frameSpeed;
 
         public StartScene(SpriteBatch spriteBatch, SpriteFont font, SpriteFont menuItemsfont, SpriteFont menuTitlefont, Game1 game, Player player, SoundManager soundManager) 
         {
@@ -79,7 +82,7 @@ namespace RetroShooter.Scenes
                 switch (_selectedMenuItem)
                 {
                     case 0:
-                        SceneManager.ChangeScene(new PlayScene(_spriteBatch, _font, _game.PlayerManager.Player, _game.laserNormalTexture, _game.enemyBulletTexture, _game.enemyTexture, _game.powerupHealthTexture, _game.powerupLaserTexture, _game, _soundManager)); 
+                        SceneManager.ChangeScene(new PlayScene(_spriteBatch, _font, _game.PlayerManager.Player, _game.laserNormalTexture, _game.enemyBulletTexture, _game.enemyTexture, _game.powerupHealthTexture, _game.powerupLaserTexture, _game, _soundManager, playerDeathTexture, frameCount, frameSpeed)); 
                         break;
                     case 1:
                         SceneManager.ChangeScene(new HelpScene(_spriteBatch, _font, _menuTitlefont, _menuItemsfont, _game, _soundManager));
