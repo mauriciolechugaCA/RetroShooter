@@ -34,7 +34,8 @@ namespace RetroShooter.Scenes
                 " ",
                 "Assets provided by",
                 "www.kenney.nl",
-                "Pixabay",
+                "motionarray.com",
+                "codemanu.itch.io",
                 " ",
                 "Enter to return..."
             };

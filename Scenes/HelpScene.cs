@@ -39,11 +39,11 @@ namespace RetroShooter.Scenes
                 "Space to shoot",
                 "ESC to pause",
                 " ",
-                "-Collect power-ups and",
-                "enhance your abilities.",
+                "Collect powerups and",
+                "enhance your damage",
                 " ",
-                "-Avoid bullets and destroy",
-                "enemies to score points.",
+                "Survive and destroy",
+                "enemies to score points",
                 " ",
                 "Enter to return..."
             };
