@@ -52,7 +52,7 @@ namespace RetroShooter.Scenes
                 _selectedIndex = (_selectedIndex + 1) % _menuItems.Length;
                 _soundManager.PlaySoundEffect("select_002"); // Sound effect for menu selection
             }
-            if (_inputManager.IsKeyPressed(Keys.Enter))
+            if (_inputManager.IsKeyPressed(Keys.Enter) || _inputManager.IsKeyPressed(Keys.Space))
             {
                 if (_selectedIndex == 0)
                 {

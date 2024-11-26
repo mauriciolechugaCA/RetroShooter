@@ -57,7 +57,7 @@ namespace RetroShooter.Scenes
                 }
                 _soundManager.PlaySoundEffect("select_002"); // Sound effect for menu selection
             }
-            else if (_inputManager.IsKeyPressed(Keys.Enter))
+            else if (_inputManager.IsKeyPressed(Keys.Enter) || _inputManager.IsKeyPressed(Keys.Space))
             {
                 _soundManager.PlaySoundEffect("confirmation_001"); // Sound effect for menu selection confirmation
                 switch (_selectedIndex)
