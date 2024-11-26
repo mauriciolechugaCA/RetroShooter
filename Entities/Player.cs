@@ -221,6 +221,36 @@ namespace RetroShooter.Entities
             OnScoreChanged?.Invoke(Score);
         }
 
+        private float lastScoreUpdateTime;
+
+        public void UpdateTimeBasedScore(GameTime gameTime)
+        {
+            float elapsedTime = (float)gameTime.TotalGameTime.TotalSeconds;
+
+            if (elapsedTime - lastScoreUpdateTime >= 5)
+            {
+                int pointsToAdd = 0;
+                if (elapsedTime < 60)
+                {
+                    pointsToAdd = 10;
+                }
+                else if (elapsedTime < 120)
+                {
+                    pointsToAdd = 20;
+                }
+                else if (elapsedTime < 180)
+                {
+                    pointsToAdd = 30;
+                }
+                else
+                {
+                    pointsToAdd = 40;
+                }
+
+                AddScore(pointsToAdd);
+                lastScoreUpdateTime = elapsedTime;
+            }
+        }
         public void ApplyEffect(Powerup powerUp, GameTime gameTime)
         {
             switch (powerUp)

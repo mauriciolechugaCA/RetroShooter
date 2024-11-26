@@ -175,6 +175,7 @@ namespace RetroShooter
         {
             // Update current scene
             SceneManager.Update(gameTime);
+            PlayerManager.Player.UpdateTimeBasedScore(gameTime);
             base.Update(gameTime);
         }
 
