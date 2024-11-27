@@ -160,7 +160,7 @@ namespace RetroShooter
 
             // Initialize scenes
             _startScene = new StartScene(_spriteBatch, _font, _menuItems, _menuTitle, this, PlayerManager.Player, _soundManager);
-            _playScene = new PlayScene(_spriteBatch, _hudFont, PlayerManager.Player, laserNormalTexture, enemyBulletTexture, enemyTexture, powerupHealthTexture, powerupLaserTexture, this, _soundManager, playerDeathTexture, frameCount, frameSpeed);
+            _playScene = new PlayScene(_spriteBatch, _hudFont, PlayerManager.Player, laserNormalTexture, enemyBulletTexture, enemyTexture, enemyShooterTexture, powerupHealthTexture, powerupLaserTexture, this, _soundManager, playerDeathTexture, frameCount, frameSpeed);
             _helpScene = new HelpScene(_spriteBatch, _font, _menuTitle, _menuItems, this, _soundManager);
             _aboutScene = new AboutScene(_spriteBatch, _creditsTitleFont, _menuItems, _menuTitle, this, _soundManager);
             _gameOverScene = new GameOverScene(_spriteBatch, _menuItems, _menuTitle, this, SoundManager);

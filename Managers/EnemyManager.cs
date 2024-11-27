@@ -24,6 +24,7 @@ namespace RetroShooter.Managers
         private List<Enemy> enemies;
         private Texture2D enemyTexture;
         private Texture2D enemyBulletTexture;
+        private Texture2D enemyShooterTexture;
         private float basicEnemySpawnTimer;
         private float shooterEnemySpawnTimer;
         private float basicEnemySpawnInterval;
@@ -31,10 +32,11 @@ namespace RetroShooter.Managers
         private List<Projectile> projectiles;
         private SoundManager _soundManager;
 
-        public EnemyManager(Texture2D enemyTexture, Texture2D enemyBulletTexture, List<Projectile> projectiles, SoundManager soundManager)
+        public EnemyManager(Texture2D enemyTexture, Texture2D enemyBulletTexture, Texture2D enemyShooterTexture, List<Projectile> projectiles, SoundManager soundManager)
         {
             this.enemyTexture = enemyTexture;
             this.enemyBulletTexture = enemyBulletTexture;
+            this.enemyShooterTexture = enemyShooterTexture;
             this.projectiles = projectiles;
             this._soundManager = soundManager;
             enemies = new List<Enemy>();
@@ -53,7 +55,7 @@ namespace RetroShooter.Managers
                     enemies.Add(new EnemyBasic(position, enemyTexture));
                     break;
                 case "Shooter":
-                    enemies.Add(new EnemyShooter(position, enemyTexture, enemyBulletTexture, projectiles, _soundManager));
+                    enemies.Add(new EnemyShooter(position, enemyShooterTexture, enemyBulletTexture, projectiles, _soundManager));
                     break;
                 default:
                     throw new ArgumentException("Unknown enemy type");

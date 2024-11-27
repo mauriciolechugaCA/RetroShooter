@@ -26,6 +26,7 @@ namespace RetroShooter.Scenes
         private PowerupManager _powerupManager;
         private CollisionManager _collisionManager;
         private Texture2D _enemyTexture;
+        private Texture2D enemyShooterTexture;
         private Texture2D _powerupHealthTexture;
         private Texture2D _powerupLaserTexture;
         private BackgroundManager _backgroundManager;
@@ -34,7 +35,7 @@ namespace RetroShooter.Scenes
         private int _frameCount;
         private float _frameSpeed;
 
-        public PlayScene(SpriteBatch spriteBatch, SpriteFont hudFont, Player player, Texture2D laserNormalTexture, Texture2D enemyBulletTexture, Texture2D enemyTexture, Texture2D powerupHealthTexture, Texture2D powerupLaserTexture, Game1 game, SoundManager soundManager, Texture2D playerDeathTexture, int frameCount, float frameSpeed)
+        public PlayScene(SpriteBatch spriteBatch, SpriteFont hudFont, Player player, Texture2D laserNormalTexture, Texture2D enemyBulletTexture, Texture2D enemyTexture, Texture2D enemyShooterTexture, Texture2D powerupHealthTexture, Texture2D powerupLaserTexture, Game1 game, SoundManager soundManager, Texture2D playerDeathTexture, int frameCount, float frameSpeed)
         {
             _spriteBatch = spriteBatch;
             _hudFont = hudFont;
@@ -44,7 +45,8 @@ namespace RetroShooter.Scenes
             _projectiles = new List<Projectile>();
             _inputManager = new InputManager();
             _enemyTexture = enemyTexture;
-            _enemyManager = new EnemyManager(_enemyTexture, enemyBulletTexture, _projectiles, soundManager);
+            enemyShooterTexture = game.enemyShooterTexture;
+            _enemyManager = new EnemyManager(_enemyTexture, enemyBulletTexture, enemyShooterTexture, _projectiles, soundManager);
             _powerupHealthTexture = powerupHealthTexture;
             _powerupLaserTexture = powerupLaserTexture;
             _powerupManager = new PowerupManager(_powerupHealthTexture, _powerupLaserTexture);
