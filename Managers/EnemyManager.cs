@@ -93,6 +93,7 @@ namespace RetroShooter.Managers
             foreach (var enemy in enemies)
             {
                 enemy.Draw(spriteBatch);
+                enemy.Draw(spriteBatch);
             }
         }
 

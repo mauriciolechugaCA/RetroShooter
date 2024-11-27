@@ -21,11 +21,12 @@ namespace RetroShooter.Entities.Enemies
         private Random random;
         private SoundManager _soundManager;
 
-        public EnemyShooter(Vector2 startPosition, Texture2D texture, Texture2D projectileTexture, List<Projectile> projectiles, SoundManager soundManager) : base(startPosition, 40, 1.5f, 25, texture, 25)
+        // Constructor (edit starting values if needed)
+        public EnemyShooter(Vector2 startPosition, Texture2D texture, Texture2D projectileTexture, List<Projectile> projectiles, SoundManager soundManager) : base(startPosition, 40, 1.25f, 25, texture, 25)
         {
             this.projectileTexture = projectileTexture;
             this.projectiles = projectiles;
-            shootCooldown = 5.0f; // Cooldown between shots
+            shootCooldown = 2.0f; // Cooldown between shots
             lastShottime = 0;
             random = new Random();
             direction = GetRandomDownwardDirection();
@@ -57,7 +58,7 @@ namespace RetroShooter.Entities.Enemies
                 var projectile = new Projectile(
                     position, 
                     direction, 
-                    10f, // Speed of the projectile
+                    12.5f, // Speed of the projectile
                     10, // Damage of the projectile
                     projectileTexture,
                     ProjectileOwner.Enemy

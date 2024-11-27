@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using RetroShooter.Managers;
+using Microsoft.Xna.Framework.Media;
 
 namespace RetroShooter.Scenes
 {
@@ -37,12 +38,20 @@ namespace RetroShooter.Scenes
         {
             _inputManager.Update();
 
-            if (_inputManager.IsKeyPressed(Keys.Up))
+            if (MediaPlayer.State != MediaState.Playing)
+            {
+                _soundManager.PlaySong("background_music");
+            }
+
+            _backgroundManager.Update(gameTime);
+
+            // Checks for keyboard input
+            if (_inputManager.IsKeyPressed(Keys.Up) || _inputManager.IsKeyPressed(Keys.W))
             {
                 _selectedIndex = (_selectedIndex - 1 + _menuItems.Length) % _menuItems.Length;
                 _soundManager.PlaySoundEffect("select_002"); // Sound effect for menu selection
             }
-            if (_inputManager.IsKeyPressed(Keys.Down))
+            if (_inputManager.IsKeyPressed(Keys.Down) || _inputManager.IsKeyPressed(Keys.S))
             {
                 _selectedIndex = (_selectedIndex + 1) % _menuItems.Length;
                 _soundManager.PlaySoundEffect("select_002"); // Sound effect for menu selection
