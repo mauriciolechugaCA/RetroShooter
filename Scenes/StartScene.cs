@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -58,6 +54,7 @@ namespace RetroShooter.Scenes
             // Update background and floating meteors
             _backgroundManager.Update(gameTime);
 
+            // Checks for keyboard input
             if (_inputManager.IsKeyPressed(Keys.Up) || _inputManager.IsKeyPressed(Keys.W))
             {
                 _selectedMenuItem--;
@@ -108,19 +105,19 @@ namespace RetroShooter.Scenes
         {
             switch (_selectedMenuItem)
             {
-                case 0:
+                case 0: // Play
                     SceneManager.ChangeScene(new PlayScene(_spriteBatch, _font, _game.PlayerManager.Player, _game.laserNormalTexture, _game.enemyBulletTexture, _game.enemyTexture, _game.enemyShooterTexture, _game.powerupHealthTexture, _game.powerupLaserTexture, _game, _soundManager, playerDeathTexture, frameCount, frameSpeed));
                     break;
-                case 1:
+                case 1: // Help
                     SceneManager.ChangeScene(new HelpScene(_spriteBatch, _font, _menuTitlefont, _menuItemsfont, _game, _soundManager));
                     break;
-                case 2:
+                case 2: // About
                     SceneManager.ChangeScene(new AboutScene(_spriteBatch, _font, _menuItemsfont, _menuTitlefont, _game, _soundManager));
                     break;
-                case 3:
+                case 3: // Load
                     _game.LoadGame();
                     break;
-                case 4:
+                case 4: // Exit
                     _game.Exit();
                     break;
             }

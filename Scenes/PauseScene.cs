@@ -2,12 +2,6 @@
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using RetroShooter.Managers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 using Microsoft.Xna.Framework.Media;
 
 namespace RetroShooter.Scenes
@@ -73,7 +67,7 @@ namespace RetroShooter.Scenes
                     case 1: // Save
                         _game.SaveGame();
                         break;
-                    case 2: // Main Menu
+                    case 2: // Start
                         MediaPlayer.Stop();
                         _game.ChangeScene(GameScene.Start);
                         break;
@@ -88,6 +82,7 @@ namespace RetroShooter.Scenes
             // Draw background and floating meteors
             _backgroundManager.Draw(_spriteBatch);
 
+            // Draw pause text
             string pauseText = "Game Paused";
             Vector2 pauseTextSize = _menuTitlefont.MeasureString(pauseText);
             Vector2 pauseTextPosition = new Vector2(
@@ -99,6 +94,7 @@ namespace RetroShooter.Scenes
             spriteBatch.DrawString(_menuTitlefont, pauseText, pauseTextPosition + shadowOffset, Color.Black);
             spriteBatch.DrawString(_menuTitlefont, pauseText, pauseTextPosition, Color.LightSeaGreen);
 
+            // Draw menu items
             for (int i = 0; i < _menuItems.Length; i++)
             {
                 Color color = (i == _selectedIndex) ? Color.IndianRed : Color.LightGray;

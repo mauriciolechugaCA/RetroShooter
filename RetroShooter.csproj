@@ -9,6 +9,10 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <Authors>Mauricio Lechuga</Authors>
+    <Company>Shmups &amp; Co</Company>
+    <Product>Retro Shooter</Product>
+    <SignAssembly>False</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Icon.ico" />

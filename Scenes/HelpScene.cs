@@ -1,12 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RetroShooter.Managers;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using Microsoft.Xna.Framework.Input;
 
 namespace RetroShooter.Scenes
@@ -72,6 +67,8 @@ namespace RetroShooter.Scenes
             // Draw background and floating meteors
             _backgroundManager.Draw(spriteBatch);
 
+
+            // Draw title
             string helpText = "Instructions";
             var titleSize = _menuTitleFont.MeasureString(helpText);
             var titlePosition = new Vector2((_spriteBatch.GraphicsDevice.Viewport.Width - titleSize.X) / 2, 175);
@@ -80,7 +77,6 @@ namespace RetroShooter.Scenes
 
             _spriteBatch.DrawString(_menuTitleFont, helpText, titlePosition + shadowOffset, Color.Black);
             _spriteBatch.DrawString(_menuTitleFont, helpText, titlePosition, Color.LightSeaGreen);
-
 
             // Draw instructions
             for (int i = 0; i < _instructions.Count; i++)

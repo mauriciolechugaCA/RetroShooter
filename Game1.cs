@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using RetroShooter.Scenes;
-using RetroShooter.Entities;
 using RetroShooter.Managers;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
@@ -84,6 +82,7 @@ namespace RetroShooter
                 PlayerManager.Player,
                 _soundManager
             ));
+
             SceneManager.ChangeScene(_startScene);
 
             // Set the window size
@@ -114,7 +113,6 @@ namespace RetroShooter
             enemyBulletTexture = Content.Load<Texture2D>("images/enemies/laserEnemy");
             enemyTexture = Content.Load<Texture2D>("images/enemies/enemyShip2");
             enemyShooterTexture = Content.Load<Texture2D>("images/enemies/enemyShip5");
-
 
             // Load powerup textures
             powerupHealthTexture = Content.Load<Texture2D>("images/powerups/powerupHealth");
@@ -166,14 +164,12 @@ namespace RetroShooter
             _gameOverScene = new GameOverScene(_spriteBatch, _menuItems, _menuTitle, this, SoundManager);
             _pauseScene = new PauseScene(_spriteBatch, _menuTitle, _menuItems, this, _soundManager);
 
-
             // Set initial scene
             SceneManager.ChangeScene(_startScene);
         }
 
         protected override void Update(GameTime gameTime)
         {
-            // Update current scene
             SceneManager.Update(gameTime);
             PlayerManager.Player.UpdateTimeBasedScore(gameTime);
             base.Update(gameTime);
@@ -182,13 +178,11 @@ namespace RetroShooter
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-
-            // Draw current scene
             SceneManager.Draw(gameTime, _spriteBatch);
             base.Draw(gameTime);
         }
 
-        // Helper method to change scenes
+        // Method to change the current scene
         public void ChangeScene(GameScene newScene)
         {
             _currentScene = newScene;

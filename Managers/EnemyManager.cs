@@ -4,17 +4,10 @@ using RetroShooter.Entities.Enemies;
 using RetroShooter.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using RetroShooter.Entities.Projectiles;
-using System.Diagnostics;
 
 /*
  * Handles enemy spawning, behavior updates, and interactions with the player.
- * ## Create, manage, and update enemies based on the current level.
- * ## Control enemy behavior and coordinate different attack patterns or projectiles.
- * ## Detect collisions with the player’s projectiles and update health/status.
  */
 
 namespace RetroShooter.Managers

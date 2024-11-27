@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using RetroShooter.Entities;
 using RetroShooter.Entities.Powerups;
@@ -11,8 +7,6 @@ using RetroShooter.Entities.Enemies;
 
 /*
  * Centralizes collision detection and response between game objects.
- * ## Detect collisions between player and enemies, projectiles and enemies, player and power-ups, etc.
- * ## Trigger appropriate responses, such as reducing player health or destroying enemies.
  */
 
 namespace RetroShooter.Managers

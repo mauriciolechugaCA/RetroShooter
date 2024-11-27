@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -72,6 +71,7 @@ namespace RetroShooter.Scenes
             // Draw background and floating meteors
             _backgroundManager.Draw(spriteBatch);
 
+            // Draw about text
             string title = "Retro Shooter v1.0";
             var titleSize = _menuTitlefont.MeasureString(title);
             var titlePosition = new Vector2((_game.GraphicsDevice.Viewport.Width - titleSize.X) / 2, 175);
@@ -81,7 +81,7 @@ namespace RetroShooter.Scenes
             _spriteBatch.DrawString(_menuTitlefont, title, titlePosition + shadowOffset, Color.Black);
             _spriteBatch.DrawString(_menuTitlefont, title, titlePosition, Color.LightSeaGreen);
 
-
+            // Draw menu items
             for (int i = 0; i < _aboutText.Count; i++)
             {
                 var text = _aboutText[i];

@@ -2,12 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RetroShooter.Entities;
-using RetroShooter.Entities.Enemies;
 using RetroShooter.Entities.Projectiles;
-using RetroShooter.Entities.Powerups;
 using RetroShooter.Managers;
 using System.Collections.Generic;
-using System.Xml.Linq;
 using Microsoft.Xna.Framework.Media;
 
 namespace RetroShooter.Scenes
@@ -70,13 +67,14 @@ namespace RetroShooter.Scenes
                 _soundManager.PlaySong("gameplay_music");
             }
 
-
+            // Pause the game
             if (_inputManager.IsKeyPressed(Keys.Escape))
             {
                 SceneManager.ChangeScene(new PauseScene(_spriteBatch, _game._menuTitle, _game._menuItems, _game, _soundManager));
                 return;
             }
 
+            // Update player
             _player.Update(_inputManager, 768, 1024, _projectiles, gameTime, _laserNormalTexture);
 
             // Update background and floating meteors
@@ -94,8 +92,10 @@ namespace RetroShooter.Scenes
             // Update enemies
             _enemyManager.Update(gameTime, _player);
 
+            // Update power-ups
             _powerupManager.Update(gameTime, _player);
 
+            // Update collision manager
             _collisionManager.Update(gameTime);
         }
 
@@ -120,7 +120,6 @@ namespace RetroShooter.Scenes
 
             // Draw power-ups
             _powerupManager.Draw(_spriteBatch);
-
 
             // Draw HUD
             string healthText = $"Health: {_player.Health}";

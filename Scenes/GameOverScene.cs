@@ -2,11 +2,6 @@
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using RetroShooter.Managers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RetroShooter.Scenes
 {
@@ -77,6 +72,7 @@ namespace RetroShooter.Scenes
 
             _backgroundManager.Draw(spriteBatch);
 
+            // Draw game over text
             string gameOverText = "Game Over";
             Vector2 gameOverSize = _menuTitlefont.MeasureString(gameOverText);
             Vector2 gameOverPosition = new Vector2(
@@ -88,6 +84,7 @@ namespace RetroShooter.Scenes
             spriteBatch.DrawString(_menuTitlefont, gameOverText, gameOverPosition + shadowOffset, Color.Black);
             spriteBatch.DrawString(_menuTitlefont, gameOverText, gameOverPosition, Color.LightSeaGreen);
 
+            // Draw menu items
             for (int i = 0; i < _menuItems.Length; i++)
             {
                 Color color = (i == _selectedIndex) ? Color.IndianRed : Color.LightGray;

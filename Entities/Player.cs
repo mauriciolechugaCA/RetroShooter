@@ -6,9 +6,7 @@ using RetroShooter.Entities.Projectiles;
 using RetroShooter.Managers;
 using System;
 using System.Collections.Generic;
-using RetroShooter.Entities;
 using RetroShooter.Scenes;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace RetroShooter.Entities
@@ -145,7 +143,6 @@ namespace RetroShooter.Entities
             if (inputManager.IsKeyDown(Keys.D) || inputManager.IsKeyDown(Keys.Right)) direction.X += 1;
             return direction;
         }
-
 
         private void ClampPositionToScreen(int screenWidth, int screenHeight)
         {
